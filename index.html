@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life — Your Meal Planning App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f9f6f1;
+    --surface: #ffffff;
+    --surface2: #f2ede6;
+    --accent: #4a7c59;
+    --accent-light: #e8f2ec;
+    --accent2: #c9773a;
+    --text: #1e1b18;
+    --text-muted: #7a7570;
+    --border: #e0d9d0;
+    --radius: 16px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.07);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* NAV */
+  nav { display:flex; align-items:center; justify-content:space-between; padding:20px 40px; background:var(--surface); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+  .logo { font-family:'DM Serif Display',serif; font-size:1.6rem; color:var(--accent); letter-spacing:-0.5px; }
+  .logo span { color:var(--accent2); }
+  .nav-tabs { display:flex; gap:4px; background:var(--surface2); border-radius:12px; padding:4px; }
+  .nav-tab { padding:8px 18px; border:none; background:transparent; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:0.9rem; cursor:pointer; color:var(--text-muted); font-weight:500; transition:all 0.2s; }
+  .nav-tab.active { background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+
+  /* HERO */
+  .hero { padding:60px 40px 40px; max-width:1100px; margin:0 auto; }
+  .hero h1 { font-family:'DM Serif Display',serif; font-size:3rem; line-height:1.15; color:var(--text); margin-bottom:12px; }
+  .hero h1 em { color:var(--accent); font-style:italic; }
+  .hero p { color:var(--text-muted); font-size:1.05rem; max-width:500px; line-height:1.6; }
+
+  /* STATS ROW */
+  .stats { display:flex; gap:16px; margin-top:32px; flex-wrap:wrap; }
+  .stat { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 22px; flex:1; min-width:140px; }
+  .stat-num { font-family:'DM Serif Display',serif; font-size:2rem; color:var(--accent); }
+  .stat-label { font-size:0.82rem; color:var(--text-muted); margin-top:2px; }
+
+  /* SECTIONS */
+  .section { max-width:1100px; margin:0 auto; padding:32px 40px; }
+  .section-title { font-family:'DM Serif Display',serif; font-size:1.6rem; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+  .section-title .pill { font-family:'DM Sans',sans-serif; font-size:0.75rem; font-weight:600; background:var(--accent-light); color:var(--accent); padding:4px 10px; border-radius:20px; letter-spacing:0.5px; }
+
+  /* BOWL GRID */
+  .bowls-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
+  .bowl-card { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s; }
+  .bowl-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+  .bowl-emoji { font-size:3.5rem; text-align:center; padding:28px 20px 16px; background:var(--surface2); }
+  .bowl-body { padding:16px 18px 18px; }
+  .bowl-name { font-weight:600; font-size:1rem; margin-bottom:6px; }
+  .bowl-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .tag { font-size:0.72rem; padding:3px 9px; border-radius:20px; background:var(--accent-light); color:var(--accent); font-weight:500; }
+  .tag.orange { background:#fef0e6; color:var(--accent2); }
+  .bowl-macros { display:flex; gap:12px; font-size:0.8rem; color:var(--text-muted); }
+  .macro { display:flex; flex-direction:column; gap:1px; }
+  .macro strong { color:var(--text); font-size:0.88rem; }
+
+  /* PLAN TABLE */
+  .plan-wrap { overflow-x:auto; }
+  .plan-table { width:100%; border-collapse:collapse; background:var(--surface); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); }
+  .plan-table th { background:var(--accent); color:#fff; padding:14px 16px; text-align:left; font-weight:500; font-size:0.88rem; letter-spacing:0.3px; }
+  .plan-table td { padding:13px 16px; border-bottom:1px solid var(--border); font-size:0.88rem; vertical-align:top; }
+  .plan-table tr:last-child td { border-bottom:none; }
+  .plan-table tr:hover td { background:var(--surface2); }
+  .day-badge { font-weight:600; font-size:0.8rem; background:var(--surface2); color:var(--text-muted); padding:3px 10px; border-radius:20px; display:inline-block; }
+  .meal-name { font-weight:500; color:var(--text); }
+  .meal-note { font-size:0.78rem; color:var(--text-muted); margin-top:2px; }
+  .week-toggle { display:flex; gap:8px; margin-bottom:16px; }
+  .week-btn { padding:8px 20px; border:1px solid var(--border); background:var(--surface); border-radius:8px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:0.88rem; color:var(--text-muted); font-weight:500; transition:all 0.2s; }
+  .week-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+  /* SHOPPING LIST */
+  .shop-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
+  .shop-section { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); padding:18px; }
+  .shop-section h4 { font-size:0.85rem; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px; }
+  .shop-item { display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid var(--border); cursor:pointer; }
+  .shop-item:last-child { border-bottom:none; }
+  .shop-item input[type=checkbox] { accent-color:var(--accent); width:16px; height:16px; cursor:pointer; flex-shrink:0; }
+  .shop-item label { font-size:0.88rem; cursor:pointer; flex:1; }
+  .shop-item.checked label { text-decoration:line-through; color:var(--text-muted); }
+
+  /* PREP GUIDE */
+  .prep-steps { display:flex; flex-direction:column; gap:12px; }
+  .prep-step { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); padding:18px 20px; display:flex; gap:16px; align-items:flex-start; }
+  .step-num { background:var(--accent); color:#fff; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.9rem; flex-shrink:0; }
+  .step-content h4 { font-weight:600; margin-bottom:4px; }
+  .step-content p { font-size:0.88rem; color:var(--text-muted); line-height:1.5; }
+
+  /* STORAGE */
+  .storage-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+  .storage-card { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); padding:18px; }
+  .storage-card .icon { font-size:2rem; margin-bottom:10px; }
+  .storage-card h4 { font-weight:600; font-size:0.95rem; margin-bottom:6px; }
+  .storage-card p { font-size:0.83rem; color:var(--text-muted); line-height:1.5; }
+  .storage-card .duration { display:inline-block; margin-top:8px; font-size:0.78rem; font-weight:600; color:var(--accent); background:var(--accent-light); padding:3px 10px; border-radius:20px; }
+
+  /* HIDDEN */
+  .page { display:none; }
+  .page.active { display:block; }
+  @media(max-width:600px){
+    nav{padding:14px 18px;} .hero{padding:36px 18px 24px;} .hero h1{font-size:2rem;}
+    .section{padding:20px 18px;} .bowls-grid{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">life<span>.</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('bowls')">Bowls</button>
+    <button class="nav-tab" onclick="showPage('plan')">2-Week Plan</button>
+    <button class="nav-tab" onclick="showPage('shopping')">Shopping</button>
+    <button class="nav-tab" onclick="showPage('prep')">Prep Guide</button>
+  </div>
+</nav>
+
+<!-- BOWLS PAGE -->
+<div id="page-bowls" class="page active">
+  <div class="hero">
+    <h1>Eat well,<br><em>feel good.</em></h1>
+    <p>Your personalised bowl recipes — high protein, fresh veggies, and bright dressings. No shrimp, no tuna.</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">18</div><div class="stat-label">Bowl recipes</div></div>
+      <div class="stat"><div class="stat-num">14</div><div class="stat-label">Days planned</div></div>
+      <div class="stat"><div class="stat-num">~500</div><div class="stat-label">kcal per bowl</div></div>
+      <div class="stat"><div class="stat-num">30g+</div><div class="stat-label">Protein per meal</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Rice Bowls <span class="pill">YOUR FAVOURITES</span></div>
+    <div class="bowls-grid">
+      <div class="bowl-card">
+        <div class="bowl-emoji">🍗🌽</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Chicken & Corn Rice Bowl</div>
+          <div class="bowl-tags"><span class="tag">High Protein</span><span class="tag">Easy</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>490</strong><span>kcal</span></div><div class="macro"><strong>38g</strong><span>protein</span></div><div class="macro"><strong>52g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+      <div class="bowl-card">
+        <div class="bowl-emoji">🥚🥒</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Egg & Veggie Rice Bowl</div>
+          <div class="bowl-tags"><span class="tag">Vegetarian</span><span class="tag">Quick</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>420</strong><span>kcal</span></div><div class="macro"><strong>22g</strong><span>protein</span></div><div class="macro"><strong>54g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+      <div class="bowl-card">
+        <div class="bowl-emoji">🫘🍅</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Chickpea & Tomato Rice</div>
+          <div class="bowl-tags"><span class="tag">Vegan</span><span class="tag orange">Filling</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>450</strong><span>kcal</span></div><div class="macro"><strong>18g</strong><span>protein</span></div><div class="macro"><strong>65g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+      <div class="bowl-card">
+        <div class="bowl-emoji">🥗🍗</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Mediterranean Chicken Rice</div>
+          <div class="bowl-tags"><span class="tag">High Protein</span><span class="tag orange">Bold Flavour</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>510</strong><span>kcal</span></div><div class="macro"><strong>42g</strong><span>protein</span></div><div class="macro"><strong>48g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+      <div class="bowl-card">
+        <div class="bowl-emoji">🌮🍗</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Mexican Chicken Rice Bowl</div>
+          <div class="bowl-tags"><span class="tag orange">Spicy</span><span class="tag">High Protein</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>530</strong><span>kcal</span></div><div class="macro"><strong>40g</strong><span>protein</span></div><div class="macro"><strong>55g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+      <div class="bowl-card">
+        <div class="bowl-emoji">🍍🍗</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Tropical Chicken Rice</div>
+          <div class="bowl-tags"><span class="tag">Sweet</span><span class="tag">Fresh</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>480</strong><span>kcal</span></div><div class="macro"><strong>36g</strong><span>protein</span></div><div class="macro"><strong>60g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Potato Bowls <span class="pill">YOU'LL LOVE THESE</span></div>
+    <div class="bowls-grid">
+      <div class="bowl-card">
+        <div class="bowl-emoji">🥔🍗</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Chicken & Roasted Potato Power</div>
+          <div class="bowl-tags"><span class="tag">High Protein</span><span class="tag orange">Hearty</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>560</strong><span>kcal</span></div><div class="macro"><strong>44g</strong><span>protein</span></div><div class="macro"><strong>58g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+      <div class="bowl-card">
+        <div class="bowl-emoji">🥚🥔</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Egg & Potato Salad Bowl</div>
+          <div class="bowl-tags"><span class="tag">Vegetarian</span><span class="tag">Easy</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>440</strong><span>kcal</span></div><div class="macro"><strong>24g</strong><span>protein</span></div><div class="macro"><strong>50g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+      <div class="bowl-card">
+        <div class="bowl-emoji">🫘🥔</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Chickpea & Sweet Potato Bowl</div>
+          <div class="bowl-tags"><span class="tag">Vegan</span><span class="tag">Fibre-Rich</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>470</strong><span>kcal</span></div><div class="macro"><strong>16g</strong><span>protein</span></div><div class="macro"><strong>72g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+      <div class="bowl-card">
+        <div class="bowl-emoji">🥑🥔</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Avocado Potato & Egg Bowl</div>
+          <div class="bowl-tags"><span class="tag">Healthy Fats</span><span class="tag">Fresh</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>520</strong><span>kcal</span></div><div class="macro"><strong>20g</strong><span>protein</span></div><div class="macro"><strong>48g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+      <div class="bowl-card">
+        <div class="bowl-emoji">🌿🥔</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Herb Chicken Potato Bowl</div>
+          <div class="bowl-tags"><span class="tag">High Protein</span><span class="tag orange">Lemon-Herb</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>490</strong><span>kcal</span></div><div class="macro"><strong>40g</strong><span>protein</span></div><div class="macro"><strong>46g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+      <div class="bowl-card">
+        <div class="bowl-emoji">🫚🥔</div>
+        <div class="bowl-body">
+          <div class="bowl-name">Tahini Potato & Veggie Bowl</div>
+          <div class="bowl-tags"><span class="tag">Vegan</span><span class="tag orange">Creamy</span></div>
+          <div class="bowl-macros"><div class="macro"><strong>460</strong><span>kcal</span></div><div class="macro"><strong>14g</strong><span>protein</span></div><div class="macro"><strong>56g</strong><span>carbs</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLAN PAGE -->
+<div id="page-plan" class="page">
+  <div class="hero">
+    <h1>Your <em>2-week</em><br>diet plan.</h1>
+    <p>Morning meals at home + afternoon bowl at work (3–4pm). Designed for weight loss, ~1400 kcal/day.</p>
+  </div>
+  <div class="section">
+    <div class="week-toggle">
+      <button class="week-btn active" onclick="showWeek(1,this)">Week 1</button>
+      <button class="week-btn" onclick="showWeek(2,this)">Week 2</button>
+    </div>
+    <div class="plan-wrap">
+      <table class="plan-table" id="plan-week1">
+        <thead><tr><th>Day</th><th>Morning (Home)</th><th>Afternoon Bowl (Work)</th><th>Total</th></tr></thead>
+        <tbody>
+          <tr><td><span class="day-badge">Mon</span></td><td><div class="meal-name">Greek Yogurt & Berries</div><div class="meal-note">200g yogurt, mixed berries, 1 tsp honey · ~300 kcal</div></td><td><div class="meal-name">Mediterranean Chicken Rice Bowl</div><div class="meal-note">Chicken, rice, cucumber, tomato, olives · ~510 kcal</div></td><td>~810 kcal</td></tr>
+          <tr><td><span class="day-badge">Tue</span></td><td><div class="meal-name">Oat Porridge & Banana</div><div class="meal-note">60g oats, milk, banana, cinnamon · ~380 kcal</div></td><td><div class="meal-name">Egg & Veggie Rice Bowl</div><div class="meal-note">2 eggs, rice, corn, cucumber, cherry tomato · ~420 kcal</div></td><td>~800 kcal</td></tr>
+          <tr><td><span class="day-badge">Wed</span></td><td><div class="meal-name">Scrambled Eggs on Toast</div><div class="meal-note">2 eggs, 1 slice wholegrain, olive oil · ~350 kcal</div></td><td><div class="meal-name">Chicken & Corn Rice Bowl</div><div class="meal-note">Chicken breast, rice, corn, tomato, lemon dressing · ~490 kcal</div></td><td>~840 kcal</td></tr>
+          <tr><td><span class="day-badge">Thu</span></td><td><div class="meal-name">Smoothie — Banana & Oat</div><div class="meal-note">Banana, 30g oats, milk, nut butter · ~340 kcal</div></td><td><div class="meal-name">Chickpea & Tomato Rice</div><div class="meal-note">Chickpeas, rice, tomato, red onion, cumin dressing · ~450 kcal</div></td><td>~790 kcal</td></tr>
+          <tr><td><span class="day-badge">Fri</span></td><td><div class="meal-name">Greek Yogurt & Granola</div><div class="meal-note">200g yogurt, 30g granola, banana · ~360 kcal</div></td><td><div class="meal-name">Tropical Chicken Rice</div><div class="meal-note">Chicken, rice, pineapple, corn, sweet chili · ~480 kcal</div></td><td>~840 kcal</td></tr>
+          <tr><td><span class="day-badge">Sat</span></td><td><div class="meal-name">Avocado Toast & Eggs</div><div class="meal-note">½ avocado, 1 slice toast, 2 eggs, chili flakes · ~420 kcal</div></td><td><div class="meal-name">Herb Chicken Potato Bowl</div><div class="meal-note">Chicken, roasted potato, greens, lemon-herb dressing · ~490 kcal</div></td><td>~910 kcal</td></tr>
+          <tr><td><span class="day-badge">Sun</span></td><td><div class="meal-name">Oat Pancakes (2)</div><div class="meal-note">Oats + egg + banana batter, fresh fruit · ~380 kcal</div></td><td><div class="meal-name">Chicken & Roasted Potato Power</div><div class="meal-note">Chicken, roasted potato, red onion, yogurt dressing · ~560 kcal</div></td><td>~940 kcal</td></tr>
+        </tbody>
+      </table>
+      <table class="plan-table" id="plan-week2" style="display:none">
+        <thead><tr><th>Day</th><th>Morning (Home)</th><th>Afternoon Bowl (Work)</th><th>Total</th></tr></thead>
+        <tbody>
+          <tr><td><span class="day-badge">Mon</span></td><td><div class="meal-name">Overnight Oats</div><div class="meal-note">60g oats, yogurt, berries, chia seeds — prep night before · ~370 kcal</div></td><td><div class="meal-name">Mexican Chicken Rice Bowl</div><div class="meal-note">Chicken, rice, black beans, corn, lime, chili · ~530 kcal</div></td><td>~900 kcal</td></tr>
+          <tr><td><span class="day-badge">Tue</span></td><td><div class="meal-name">Boiled Eggs & Fruit</div><div class="meal-note">2 boiled eggs, orange, small handful nuts · ~310 kcal</div></td><td><div class="meal-name">Egg & Potato Salad Bowl</div><div class="meal-note">2 eggs, roasted potato, cucumber, mustard dressing · ~440 kcal</div></td><td>~750 kcal</td></tr>
+          <tr><td><span class="day-badge">Wed</span></td><td><div class="meal-name">Greek Yogurt & Berries</div><div class="meal-note">200g yogurt, mixed berries, 1 tsp honey · ~300 kcal</div></td><td><div class="meal-name">Avocado Potato & Egg Bowl</div><div class="meal-note">½ avocado, roasted potato, 2 eggs, lemon · ~520 kcal</div></td><td>~820 kcal</td></tr>
+          <tr><td><span class="day-badge">Thu</span></td><td><div class="meal-name">Oat Porridge & Apple</div><div class="meal-note">60g oats, milk, apple, cinnamon · ~360 kcal</div></td><td><div class="meal-name">Tahini Potato & Veggie Bowl</div><div class="meal-note">Roasted potato, chickpeas, tomato, tahini dressing · ~460 kcal</div></td><td>~820 kcal</td></tr>
+          <tr><td><span class="day-badge">Fri</span></td><td><div class="meal-name">Smoothie — Berry & Banana</div><div class="meal-note">Frozen berries, banana, yogurt, oats · ~330 kcal</div></td><td><div class="meal-name">Chickpea & Sweet Potato Bowl</div><div class="meal-note">Chickpeas, sweet potato, spinach, cumin-lemon · ~470 kcal</div></td><td>~800 kcal</td></tr>
+          <tr><td><span class="day-badge">Sat</span></td><td><div class="meal-name">Scrambled Eggs & Avocado</div><div class="meal-note">2 eggs, ½ avocado, cherry tomato, toast · ~430 kcal</div></td><td><div class="meal-name">Mediterranean Chicken Rice Bowl</div><div class="meal-note">Chicken, rice, olives, cucumber, feta · ~510 kcal</div></td><td>~940 kcal</td></tr>
+          <tr><td><span class="day-badge">Sun</span></td><td><div class="meal-name">Banana Oat Pancakes (2)</div><div class="meal-note">Oat batter, berries, small drizzle honey · ~380 kcal</div></td><td><div class="meal-name">Herb Chicken Potato Bowl</div><div class="meal-note">Chicken, roasted potato, greens, lemon-herb dressing · ~490 kcal</div></td><td>~870 kcal</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SHOPPING PAGE -->
+<div id="page-shopping" class="page">
+  <div class="hero">
+    <h1>Shopping <em>list.</em></h1>
+    <p>Everything you need for 2 weeks, sorted by supermarket section. Tap items to check them off.</p>
+  </div>
+  <div class="section">
+    <div class="shop-grid">
+      <div class="shop-section">
+        <h4>🛒 Proteins</h4>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Chicken breast (1.5kg / week)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Eggs (x18 per week)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Greek yogurt (1kg tub)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Canned chickpeas (4 cans)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Canned black beans (2 cans)</label></div>
+      </div>
+      <div class="shop-section">
+        <h4>🌾 Carbs & Grains</h4>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>White/brown rice (2kg bag)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Rolled oats (1kg bag)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Wholegrain bread (1 loaf)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Granola (small bag)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Chia seeds (small bag)</label></div>
+      </div>
+      <div class="shop-section">
+        <h4>🥦 Vegetables</h4>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Potatoes (2kg)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Sweet potatoes (1kg)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Cherry tomatoes (500g)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Cucumber (x3)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Red onion (x3)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Corn (canned, x3)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Spinach / mixed greens (bag)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Avocados (x4)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Olives (small jar)</label></div>
+      </div>
+      <div class="shop-section">
+        <h4>🍌 Fruit</h4>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Bananas (bunch)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Frozen berries (1kg bag)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Apples (x4)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Oranges (x4)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Pineapple (canned chunks)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Lemons (x4)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Limes (x3)</label></div>
+      </div>
+      <div class="shop-section">
+        <h4>🫙 Pantry & Dressings</h4>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Olive oil</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Tahini</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Dijon mustard</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Sweet chili sauce</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Honey (small jar)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Cumin powder</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Paprika / chili flakes</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Garlic (bulb)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Soy sauce (small bottle)</label></div>
+      </div>
+      <div class="shop-section">
+        <h4>🥛 Dairy & Extras</h4>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Milk (1L)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Feta cheese (small block)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Nut butter (peanut/almond)</label></div>
+        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Mixed nuts (small bag)</label></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PREP PAGE -->
+<div id="page-prep" class="page">
+  <div class="hero">
+    <h1>Sunday <em>prep</em><br>guide.</h1>
+    <p>90 minutes on Sunday = effortless meals all week. Here's the exact order to do everything.</p>
+  </div>
+  <div class="section">
+    <div class="section-title">Sunday Prep Order</div>
+    <div class="prep-steps">
+      <div class="prep-step"><div class="step-num">1</div><div class="step-content"><h4>Cook rice (20 min, hands-off)</h4><p>Rinse 400g rice, cook in pot (2:1 water ratio). Cover and leave on low. Spread on a tray to cool completely before storing.</p></div></div>
+      <div class="prep-step"><div class="step-num">2</div><div class="step-content"><h4>Roast potatoes & sweet potatoes (30 min, hands-off)</h4><p>Cube 1kg potatoes + 500g sweet potato. Toss with olive oil, salt, paprika. Roast at 200°C on two trays. Check rice while this cooks.</p></div></div>
+      <div class="prep-step"><div class="step-num">3</div><div class="step-content"><h4>Cook chicken breast (20 min)</h4><p>Season 4–5 chicken breasts with olive oil, salt, garlic, herbs. Pan-fry or bake until cooked through. Let rest, then slice into strips. Store cold.</p></div></div>
+      <div class="prep-step"><div class="step-num">4</div><div class="step-content"><h4>Boil eggs (10 min)</h4><p>Boil 6 eggs for 8 minutes for hard-boiled. Cool in ice water, peel, and store in the fridge (or keep unpeeled up to 1 week).</p></div></div>
+      <div class="prep-step"><div class="step-num">5</div><div class="step-content"><h4>Prep fresh veg (10 min)</h4><p>Slice cucumber, halve cherry tomatoes, dice red onion. Store each separately in small containers or zip bags.</p></div></div>
+      <div class="prep-step"><div class="step-num">6</div><div class="step-content"><h4>Make 2 dressings (5 min)</h4><p><strong>Lemon-olive oil:</strong> 3 tbsp olive oil + juice of 1 lemon + salt + mustard. <strong>Tahini:</strong> 2 tbsp tahini + lemon juice + water + garlic. Store in jars.</p></div></div>
+      <div class="prep-step"><div class="step-num">7</div><div class="step-content"><h4>Store everything correctly</h4><p>Pack cooled rice and potatoes into airtight containers. Label with date. Chicken in a separate airtight container. Everything lasts 4 days in the fridge.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:0">
+    <div class="section-title">Storage Guide</div>
+    <div class="storage-grid">
+      <div class="storage-card"><div class="icon">🍗</div><h4>Cooked Chicken</h4><p>Airtight container, sliced and ready. Keep on a mid-fridge shelf. Separate from other items.</p><span class="duration">Up to 4 days</span></div>
+      <div class="storage-card"><div class="icon">🍚</div><h4>Cooked Rice</h4><p>Cool completely first — never store hot rice. Airtight container. For week 2, freeze half in portions.</p><span class="duration">4 days fridge · 2 months frozen</span></div>
+      <div class="storage-card"><div class="icon">🥔</div><h4>Roasted Potatoes</h4><p>Cool first, then airtight container. Don't freeze — texture suffers. Reheat in a dry pan or eat cold.</p><span class="duration">Up to 4 days</span></div>
+      <div class="storage-card"><div class="icon">🥚</div><h4>Boiled Eggs</h4><p>Keep unpeeled in the fridge for up to 1 week. Peel just before eating to keep them fresh.</p><span class="duration">Up to 7 days unpeeled</span></div>
+      <div class="storage-card"><div class="icon">🥒</div><h4>Cut Vegetables</h4><p>Each veg in its own small container or bag. Tomatoes and cucumber stay crispest when stored dry.</p><span class="duration">Up to 4 days</span></div>
+      <div class="storage-card"><div class="icon">🫙</div><h4>Dressings</h4><p>Glass jars with lids. Tahini dressing may thicken — add a splash of water and shake before using.</p><span class="duration">Up to 5 days</span></div>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:0">
+    <div class="section-title">Packing Your Work Bowl</div>
+    <div class="prep-steps">
+      <div class="prep-step"><div class="step-num">☀️</div><div class="step-content"><h4>Morning of (5 minutes)</h4><p>Grab your base (rice or potato), add protein (chicken or eggs), pile on the fresh veg, drizzle your dressing over last. Seal. The bowls taste great cold — no microwave needed.</p></div></div>
+      <div class="prep-step"><div class="step-num">🧊</div><div class="step-content"><h4>At work</h4><p>Refrigerate until 3–4pm. Eat directly from the container. No heating required — these bowls are designed to be eaten at room temperature, just like the restaurant versions you loved.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showWeek(num, btn) {
+  document.getElementById('plan-week1').style.display = num===1 ? '' : 'none';
+  document.getElementById('plan-week2').style.display = num===2 ? '' : 'none';
+  document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  el.querySelector('input').checked = el.classList.contains('checked');
+}
+</script>
+</body>
+</html>
