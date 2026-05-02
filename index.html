@@ -3,417 +3,838 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Life — Your Meal Planning App</title>
+<title>Life — Healthy Living Made Simple</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f9f6f1;
-    --surface: #ffffff;
-    --surface2: #f2ede6;
-    --accent: #4a7c59;
-    --accent-light: #e8f2ec;
-    --accent2: #c9773a;
-    --text: #1e1b18;
-    --text-muted: #7a7570;
-    --border: #e0d9d0;
-    --radius: 16px;
-    --shadow: 0 2px 16px rgba(0,0,0,0.07);
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+/* ============================
+   RESET & VARIABLES
+   ============================ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --green-dark:   #1a3c1e;
+  --green-main:   #2d6a35;
+  --green-mid:    #3d8b47;
+  --green-light:  #e8f5e9;
+  --green-pale:   #f2faf3;
+  --green-accent: #4caf50;
+  --green-text:   #2d6a35;
+  --orange:       #e07b39;
+  --red:          #e05252;
+  --purple:       #9c27b0;
+  --bg:           #f4faf5;
+  --surface:      #ffffff;
+  --border:       #ddeedd;
+  --text:         #1a1a1a;
+  --text-muted:   #6b7c6b;
+  --text-light:   #9aab9a;
+  --radius-sm:    8px;
+  --radius:       12px;
+  --radius-lg:    16px;
+  --shadow-sm:    0 1px 4px rgba(0,0,0,0.06);
+  --shadow:       0 2px 12px rgba(0,0,0,0.08);
+}
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:14px; }
+button { cursor:pointer; font-family:inherit; border:none; }
+img { display:block; }
 
-  /* NAV */
-  nav { display:flex; align-items:center; justify-content:space-between; padding:20px 40px; background:var(--surface); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
-  .logo { font-family:'DM Serif Display',serif; font-size:1.6rem; color:var(--accent); letter-spacing:-0.5px; }
-  .logo span { color:var(--accent2); }
-  .nav-tabs { display:flex; gap:4px; background:var(--surface2); border-radius:12px; padding:4px; }
-  .nav-tab { padding:8px 18px; border:none; background:transparent; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:0.9rem; cursor:pointer; color:var(--text-muted); font-weight:500; transition:all 0.2s; }
-  .nav-tab.active { background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+/* ============================
+   NAV
+   ============================ */
+nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 40px; height:60px;
+  background:var(--surface); border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:200;
+}
+.nav-logo { font-size:1.3rem; font-weight:700; color:var(--green-main); letter-spacing:-0.5px; }
+.nav-links { display:flex; gap:32px; align-items:center; }
+.nav-link {
+  font-size:0.9rem; font-weight:500; color:var(--text-muted);
+  background:none; border:none; padding:4px 0; position:relative;
+  text-decoration:none; cursor:pointer;
+  transition:color 0.2s;
+}
+.nav-link:hover { color:var(--text); }
+.nav-link.active { color:var(--green-main); }
+.nav-link.active::after {
+  content:''; position:absolute; bottom:-4px; left:0; right:0;
+  height:2px; background:var(--green-main); border-radius:2px;
+}
+.nav-icon { width:36px; height:36px; border-radius:50%; background:var(--green-light); border:none; display:flex; align-items:center; justify-content:center; color:var(--green-main); }
 
-  /* HERO */
-  .hero { padding:60px 40px 40px; max-width:1100px; margin:0 auto; }
-  .hero h1 { font-family:'DM Serif Display',serif; font-size:3rem; line-height:1.15; color:var(--text); margin-bottom:12px; }
-  .hero h1 em { color:var(--accent); font-style:italic; }
-  .hero p { color:var(--text-muted); font-size:1.05rem; max-width:500px; line-height:1.6; }
+/* ============================
+   PAGE SYSTEM
+   ============================ */
+.page { display:none; }
+.page.active { display:block; }
 
-  /* STATS ROW */
-  .stats { display:flex; gap:16px; margin-top:32px; flex-wrap:wrap; }
-  .stat { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 22px; flex:1; min-width:140px; }
-  .stat-num { font-family:'DM Serif Display',serif; font-size:2rem; color:var(--accent); }
-  .stat-label { font-size:0.82rem; color:var(--text-muted); margin-top:2px; }
+/* ============================
+   DASHBOARD
+   ============================ */
+#page-dashboard { background:var(--bg); padding:32px 40px; min-height:calc(100vh - 60px); }
 
-  /* SECTIONS */
-  .section { max-width:1100px; margin:0 auto; padding:32px 40px; }
-  .section-title { font-family:'DM Serif Display',serif; font-size:1.6rem; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
-  .section-title .pill { font-family:'DM Sans',sans-serif; font-size:0.75rem; font-weight:600; background:var(--accent-light); color:var(--accent); padding:4px 10px; border-radius:20px; letter-spacing:0.5px; }
+.week-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
+.week-title h2 { font-size:1.3rem; font-weight:700; }
+.week-title p { font-size:0.82rem; color:var(--text-muted); margin-top:2px; }
+.full-calendar-btn { display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:600; color:var(--green-main); background:none; border:none; }
 
-  /* BOWL GRID */
-  .bowls-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
-  .bowl-card { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s; }
-  .bowl-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
-  .bowl-emoji { font-size:3.5rem; text-align:center; padding:28px 20px 16px; background:var(--surface2); }
-  .bowl-body { padding:16px 18px 18px; }
-  .bowl-name { font-weight:600; font-size:1rem; margin-bottom:6px; }
-  .bowl-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
-  .tag { font-size:0.72rem; padding:3px 9px; border-radius:20px; background:var(--accent-light); color:var(--accent); font-weight:500; }
-  .tag.orange { background:#fef0e6; color:var(--accent2); }
-  .bowl-macros { display:flex; gap:12px; font-size:0.8rem; color:var(--text-muted); }
-  .macro { display:flex; flex-direction:column; gap:1px; }
-  .macro strong { color:var(--text); font-size:0.88rem; }
+.week-strip { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:28px; }
+.day-cell {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:14px 10px; text-align:center; cursor:pointer; transition:all 0.2s;
+}
+.day-cell:hover { border-color:var(--green-mid); }
+.day-cell.active { background:var(--green-dark); border-color:var(--green-dark); color:#fff; }
+.day-cell .day-name { font-size:0.7rem; font-weight:600; letter-spacing:0.5px; opacity:0.7; margin-bottom:4px; text-transform:uppercase; }
+.day-cell .day-num { font-size:1.3rem; font-weight:700; }
 
-  /* PLAN TABLE */
-  .plan-wrap { overflow-x:auto; }
-  .plan-table { width:100%; border-collapse:collapse; background:var(--surface); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); }
-  .plan-table th { background:var(--accent); color:#fff; padding:14px 16px; text-align:left; font-weight:500; font-size:0.88rem; letter-spacing:0.3px; }
-  .plan-table td { padding:13px 16px; border-bottom:1px solid var(--border); font-size:0.88rem; vertical-align:top; }
-  .plan-table tr:last-child td { border-bottom:none; }
-  .plan-table tr:hover td { background:var(--surface2); }
-  .day-badge { font-weight:600; font-size:0.8rem; background:var(--surface2); color:var(--text-muted); padding:3px 10px; border-radius:20px; display:inline-block; }
-  .meal-name { font-weight:500; color:var(--text); }
-  .meal-note { font-size:0.78rem; color:var(--text-muted); margin-top:2px; }
-  .week-toggle { display:flex; gap:8px; margin-bottom:16px; }
-  .week-btn { padding:8px 20px; border:1px solid var(--border); background:var(--surface); border-radius:8px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:0.88rem; color:var(--text-muted); font-weight:500; transition:all 0.2s; }
-  .week-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.dashboard-body { display:grid; grid-template-columns:340px 1fr; gap:24px; }
 
-  /* SHOPPING LIST */
-  .shop-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
-  .shop-section { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); padding:18px; }
-  .shop-section h4 { font-size:0.85rem; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px; }
-  .shop-item { display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid var(--border); cursor:pointer; }
-  .shop-item:last-child { border-bottom:none; }
-  .shop-item input[type=checkbox] { accent-color:var(--accent); width:16px; height:16px; cursor:pointer; flex-shrink:0; }
-  .shop-item label { font-size:0.88rem; cursor:pointer; flex:1; }
-  .shop-item.checked label { text-decoration:line-through; color:var(--text-muted); }
+/* Left column */
+.progress-card { background:var(--surface); border-radius:var(--radius-lg); padding:24px; box-shadow:var(--shadow-sm); }
+.progress-card h3 { font-size:1rem; font-weight:700; margin-bottom:20px; }
 
-  /* PREP GUIDE */
-  .prep-steps { display:flex; flex-direction:column; gap:12px; }
-  .prep-step { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); padding:18px 20px; display:flex; gap:16px; align-items:flex-start; }
-  .step-num { background:var(--accent); color:#fff; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.9rem; flex-shrink:0; }
-  .step-content h4 { font-weight:600; margin-bottom:4px; }
-  .step-content p { font-size:0.88rem; color:var(--text-muted); line-height:1.5; }
+.donut-wrap { position:relative; width:160px; height:160px; margin:0 auto 24px; }
+.donut-wrap svg { width:100%; height:100%; transform:rotate(-90deg); }
+.donut-track { fill:none; stroke:#e8f0e8; stroke-width:14; }
+.donut-fill { fill:none; stroke:var(--green-dark); stroke-width:14; stroke-linecap:round; stroke-dasharray:376; stroke-dashoffset:80; transition:stroke-dashoffset 1s ease; }
+.donut-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.donut-kcal { font-size:1.8rem; font-weight:700; line-height:1; }
+.donut-label { font-size:0.7rem; font-weight:600; color:var(--text-muted); letter-spacing:0.5px; margin-top:2px; }
 
-  /* STORAGE */
-  .storage-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
-  .storage-card { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); padding:18px; }
-  .storage-card .icon { font-size:2rem; margin-bottom:10px; }
-  .storage-card h4 { font-weight:600; font-size:0.95rem; margin-bottom:6px; }
-  .storage-card p { font-size:0.83rem; color:var(--text-muted); line-height:1.5; }
-  .storage-card .duration { display:inline-block; margin-top:8px; font-size:0.78rem; font-weight:600; color:var(--accent); background:var(--accent-light); padding:3px 10px; border-radius:20px; }
+.macros-list { display:flex; flex-direction:column; gap:14px; margin-bottom:20px; }
+.macro-row { display:flex; flex-direction:column; gap:5px; }
+.macro-row-header { display:flex; justify-content:space-between; font-size:0.82rem; }
+.macro-row-header span:first-child { font-weight:500; }
+.macro-row-header span:last-child { color:var(--text-muted); }
+.macro-bar { height:6px; background:#eee; border-radius:3px; overflow:hidden; }
+.macro-bar-fill { height:100%; border-radius:3px; }
+.bar-protein { background:var(--green-main); width:70%; }
+.bar-carbs { background:var(--orange); width:68%; }
+.bar-fats { background:var(--purple); width:65%; }
 
-  /* HIDDEN */
-  .page { display:none; }
-  .page.active { display:block; }
-  @media(max-width:600px){
-    nav{padding:14px 18px;} .hero{padding:36px 18px 24px;} .hero h1{font-size:2rem;}
-    .section{padding:20px 18px;} .bowls-grid{grid-template-columns:1fr 1fr;}
-  }
+.log-water-btn {
+  width:100%; padding:13px; border-radius:var(--radius);
+  background:var(--green-dark); color:#fff;
+  font-size:0.9rem; font-weight:600;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+
+.pro-tip { background:var(--green-light); border-radius:var(--radius-lg); padding:18px; margin-top:16px; display:flex; gap:12px; align-items:flex-start; }
+.pro-tip-icon { font-size:1.2rem; margin-top:1px; }
+.pro-tip-text h4 { font-size:0.85rem; font-weight:700; margin-bottom:4px; }
+.pro-tip-text p { font-size:0.8rem; color:var(--text-muted); line-height:1.5; }
+
+/* Today's meals */
+.meals-section { }
+.meals-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.meals-header h2 { font-size:1.2rem; font-weight:700; }
+.date-badge { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:5px 12px; font-size:0.78rem; font-weight:500; color:var(--text-muted); }
+
+.meal-card {
+  background:var(--surface); border-radius:var(--radius-lg); overflow:hidden;
+  display:flex; gap:0; margin-bottom:14px; box-shadow:var(--shadow-sm);
+  border:1px solid var(--border);
+}
+.meal-img-wrap { position:relative; width:200px; flex-shrink:0; }
+.meal-img-wrap img { width:100%; height:100%; object-fit:cover; }
+.meal-type-badge {
+  position:absolute; top:10px; left:10px;
+  background:rgba(0,0,0,0.55); backdrop-filter:blur(4px);
+  color:#fff; font-size:0.65rem; font-weight:700; letter-spacing:0.8px;
+  padding:4px 8px; border-radius:6px; text-transform:uppercase;
+}
+.meal-info { flex:1; padding:18px 20px; display:flex; flex-direction:column; justify-content:space-between; }
+.meal-info-top { }
+.meal-top-row { display:flex; justify-content:space-between; align-items:flex-start; }
+.meal-name { font-size:1rem; font-weight:700; margin-bottom:8px; }
+.meal-meta { display:flex; gap:16px; font-size:0.78rem; color:var(--text-muted); margin-bottom:12px; }
+.meal-meta span { display:flex; align-items:center; gap:4px; }
+.meal-tags { display:flex; gap:8px; flex-wrap:wrap; }
+.meal-tag { font-size:0.7rem; font-weight:600; padding:4px 10px; border-radius:20px; border:1px solid var(--border); color:var(--text-muted); background:var(--bg); letter-spacing:0.3px; }
+.meal-action { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.meal-action.done { background:var(--green-dark); color:#fff; }
+.meal-action.pending { background:var(--green-light); color:var(--green-main); border:1px solid var(--border); }
+.more-btn { background:none; border:none; color:var(--text-muted); font-size:1rem; padding:4px; }
+
+/* ============================
+   MEAL PLANNER
+   ============================ */
+#page-planner { display:none; background:var(--bg); padding:32px 40px; min-height:calc(100vh - 60px); }
+#page-planner.active { display:grid; grid-template-columns:300px 1fr; gap:24px; }
+
+/* Left sidebar */
+.planner-sidebar { }
+.recommended-card { background:var(--surface); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm); border:1px solid var(--border); }
+.rec-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.rec-header h3 { font-size:1rem; font-weight:700; }
+.rec-header button { background:none; border:none; color:var(--green-main); font-size:1rem; }
+.rec-subtitle { font-size:0.78rem; color:var(--text-muted); margin-bottom:16px; }
+.rec-list { display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
+.rec-item { display:flex; gap:12px; align-items:center; background:var(--green-pale); border:1px solid var(--border); border-radius:var(--radius); padding:10px; }
+.rec-item img { width:52px; height:52px; border-radius:var(--radius-sm); object-fit:cover; }
+.rec-item-info { flex:1; }
+.rec-item-name { font-size:0.85rem; font-weight:600; margin-bottom:3px; }
+.rec-item-tag { font-size:0.68rem; font-weight:700; letter-spacing:0.5px; }
+.tag-vegan { color:var(--green-main); }
+.tag-protein { color:var(--orange); }
+.tag-keto { color:var(--red); }
+.create-recipe-btn {
+  width:100%; padding:12px; border-radius:var(--radius);
+  background:var(--green-dark); color:#fff;
+  font-size:0.88rem; font-weight:600;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+
+/* Planner main */
+.planner-main { }
+.planner-main-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
+.planner-main-header h3 { font-size:0.82rem; font-weight:600; color:var(--green-main); }
+.planner-main-header h2 { font-size:1rem; font-weight:500; color:var(--text-muted); margin-top:2px; }
+.week-toggle { display:flex; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+.week-toggle-btn { padding:8px 20px; font-size:0.85rem; font-weight:600; background:none; color:var(--text-muted); transition:all 0.2s; }
+.week-toggle-btn.active { background:var(--green-dark); color:#fff; }
+
+.planner-grid { background:var(--surface); border-radius:var(--radius-lg); border:1px solid var(--border); overflow:hidden; }
+.planner-grid-header { display:grid; grid-template-columns:repeat(7,1fr); }
+.pg-day-col { padding:12px 10px; text-align:center; border-right:1px solid var(--border); }
+.pg-day-col:last-child { border-right:none; }
+.pg-day-name { font-size:0.7rem; font-weight:600; color:var(--text-muted); letter-spacing:0.5px; text-transform:uppercase; margin-bottom:2px; }
+.pg-day-num { font-size:1.1rem; font-weight:700; }
+.pg-day-col.today .pg-day-name { color:var(--green-main); }
+.pg-day-col.today .pg-day-num { color:var(--green-main); }
+.pg-day-col.today { border:2px solid var(--green-main); border-top:none; }
+
+.planner-grid-body { display:grid; grid-template-columns:repeat(7,1fr); border-top:1px solid var(--border); }
+.pg-col { border-right:1px solid var(--border); }
+.pg-col:last-child { border-right:none; }
+.pg-col.today { border-left:2px solid var(--green-main); border-right:2px solid var(--green-main); border-bottom:2px solid var(--green-main); }
+.pg-meal-slot { padding:10px; border-bottom:1px solid var(--border); min-height:110px; }
+.pg-meal-slot:last-child { border-bottom:none; }
+.pg-slot-label { font-size:0.65rem; font-weight:600; color:var(--text-light); letter-spacing:0.5px; text-transform:uppercase; margin-bottom:6px; }
+.pg-meal-card { background:var(--green-pale); border-radius:var(--radius-sm); padding:8px 10px; font-size:0.78rem; font-weight:500; }
+.pg-meal-kcal { font-size:0.7rem; color:var(--text-muted); margin-top:3px; }
+.pg-add-btn { width:100%; padding:8px; border:1.5px dashed var(--border); border-radius:var(--radius-sm); background:none; color:var(--text-light); font-size:0.78rem; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer; }
+.pg-add-btn:hover { border-color:var(--green-mid); color:var(--green-mid); }
+.pg-empty { display:flex; align-items:center; justify-content:center; height:90px; }
+.pg-empty-icon { color:var(--border); font-size:1.2rem; }
+
+.planner-stats { display:grid; grid-template-columns:1fr 1fr 1.2fr; gap:16px; margin-top:16px; }
+.planner-stat-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px 22px; display:flex; gap:14px; align-items:center; }
+.planner-stat-card.grocery { background:var(--green-dark); color:#fff; cursor:pointer; }
+.stat-icon { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+.stat-icon.green { background:var(--green-light); color:var(--green-main); }
+.stat-icon.orange { background:#fff3e8; color:var(--orange); }
+.stat-icon.white { background:rgba(255,255,255,0.15); color:#fff; }
+.stat-info label { font-size:0.65rem; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--text-muted); }
+.planner-stat-card.grocery .stat-info label { color:rgba(255,255,255,0.7); }
+.stat-info p { font-size:1.1rem; font-weight:700; margin-top:2px; }
+.planner-stat-card.grocery .stat-info p { color:#fff; }
+.stat-arrow { margin-left:auto; font-size:1.1rem; opacity:0.6; }
+
+/* ============================
+   RECIPES
+   ============================ */
+#page-recipes { display:none; background:var(--bg); min-height:calc(100vh - 60px); }
+#page-recipes.active { display:block; }
+
+.recipe-hero { position:relative; height:340px; overflow:hidden; }
+.recipe-hero-img { width:100%; height:100%; object-fit:cover; filter:brightness(0.75); }
+.recipe-hero-content { position:absolute; bottom:0; left:0; right:0; padding:32px 40px; }
+.recipe-hero-tags { display:flex; gap:8px; margin-bottom:12px; }
+.hero-tag { font-size:0.72rem; font-weight:700; letter-spacing:0.5px; padding:5px 12px; border-radius:6px; text-transform:uppercase; }
+.hero-tag.vegan { background:var(--green-mid); color:#fff; }
+.hero-tag.fiber { background:var(--orange); color:#fff; }
+.recipe-hero-title { font-size:2rem; font-weight:700; color:#fff; margin-bottom:8px; }
+.recipe-hero-desc { font-size:0.88rem; color:rgba(255,255,255,0.85); max-width:540px; line-height:1.5; }
+
+.recipe-body { padding:32px 40px; }
+
+/* Recipe selector tabs */
+.recipe-tabs { display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap; }
+.recipe-tab { padding:8px 18px; border-radius:20px; border:1px solid var(--border); background:var(--surface); font-size:0.82rem; font-weight:500; color:var(--text-muted); transition:all 0.2s; }
+.recipe-tab.active { background:var(--green-dark); color:#fff; border-color:var(--green-dark); }
+
+.recipe-stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+.recipe-stat { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; text-align:center; }
+.recipe-stat-icon { font-size:1.3rem; color:var(--text-muted); margin-bottom:8px; }
+.recipe-stat-label { font-size:0.65rem; font-weight:700; letter-spacing:0.8px; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px; }
+.recipe-stat-val { font-size:1rem; font-weight:700; color:var(--green-main); }
+
+.recipe-detail { display:grid; grid-template-columns:300px 1fr; gap:24px; margin-bottom:28px; }
+
+.ingredients-card { background:var(--surface); border-radius:var(--radius-lg); border:1px solid var(--border); padding:22px; }
+.ingredients-card h3 { font-size:0.9rem; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+.ing-list { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.ing-item { display:flex; align-items:center; gap:10px; font-size:0.85rem; }
+.ing-check { width:18px; height:18px; border:1.5px solid var(--border); border-radius:4px; flex-shrink:0; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.cook-now-btn {
+  width:100%; padding:13px; border-radius:var(--radius);
+  background:var(--green-dark); color:#fff;
+  font-size:0.9rem; font-weight:600;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+
+.instructions-card { background:var(--surface); border-radius:var(--radius-lg); border:1px solid var(--border); padding:22px; }
+.instructions-card h3 { font-size:0.9rem; font-weight:700; margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+.step-list { display:flex; flex-direction:column; gap:20px; }
+.step-item { display:flex; gap:16px; }
+.step-num { width:30px; height:30px; background:var(--green-dark); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.82rem; font-weight:700; flex-shrink:0; margin-top:1px; }
+.step-content { flex:1; }
+.step-title { font-size:0.88rem; font-weight:600; color:var(--green-main); margin-bottom:5px; }
+.step-text { font-size:0.83rem; color:var(--text-muted); line-height:1.6; }
+
+.nutrition-card { background:var(--surface); border-radius:var(--radius-lg); border:1px solid var(--border); padding:22px; }
+.nutrition-card h3 { font-size:0.9rem; font-weight:700; margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+.nutrition-rows { display:flex; flex-direction:column; gap:16px; }
+.nutrition-row { }
+.nutrition-row-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+.nutrition-name { font-size:0.9rem; font-weight:500; }
+.nutrition-val { font-size:0.88rem; font-weight:700; color:var(--green-main); }
+.nutrition-bar { height:6px; background:#eee; border-radius:3px; overflow:hidden; margin-bottom:4px; }
+.nutrition-bar-fill { height:100%; border-radius:3px; }
+.nb-protein { background:var(--green-main); width:60%; }
+.nb-carbs { background:var(--orange); width:80%; }
+.nb-fats { background:var(--purple); width:45%; }
+.nutrition-note { font-size:0.72rem; color:var(--text-muted); }
+
+/* ============================
+   FOOTER
+   ============================ */
+footer {
+  border-top:1px solid var(--border); background:var(--surface);
+  padding:16px 40px; display:flex; justify-content:space-between; align-items:center;
+  font-size:0.78rem; color:var(--text-muted);
+}
+footer a { color:var(--text-muted); text-decoration:none; margin-left:20px; }
+footer a:hover { color:var(--text); }
+
+/* ============================
+   FOOD IMAGE PLACEHOLDERS
+   (CSS-drawn food visuals)
+   ============================ */
+.food-img { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:3.5rem; }
+.food-img-sm { width:52px; height:52px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:1.6rem; }
+
+.bg-avocado   { background:linear-gradient(135deg,#a8d8a8,#4caf50); }
+.bg-quinoa    { background:linear-gradient(135deg,#ffe0b2,#ff9800); }
+.bg-salmon    { background:linear-gradient(135deg,#ffccbc,#ff7043); }
+.bg-veggie    { background:linear-gradient(135deg,#c8e6c9,#388e3c); }
+.bg-chicken   { background:linear-gradient(135deg,#fff9c4,#f9a825); }
+.bg-oatmeal   { background:linear-gradient(135deg,#f5f5dc,#d4a574); }
+.bg-berry     { background:linear-gradient(135deg,#e8d5ff,#9c27b0); }
+.bg-lentil    { background:linear-gradient(135deg,#ffe0b2,#e65100); }
+.bg-tofu      { background:linear-gradient(135deg,#e8f5e9,#66bb6a); }
+.bg-rainbow   { background:linear-gradient(135deg,#b2ebf2,#26c6da,#a5d6a7,#ef9a9a); }
+.bg-green     { background:linear-gradient(135deg,#c8e6c9,#43a047); }
+.bg-honey     { background:linear-gradient(135deg,#fff9c4,#ff8f00); }
+
+/* SVG icons inline */
+.icon { display:inline-flex; align-items:center; }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <div class="logo">life<span>.</span></div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('bowls')">Bowls</button>
-    <button class="nav-tab" onclick="showPage('plan')">2-Week Plan</button>
-    <button class="nav-tab" onclick="showPage('shopping')">Shopping</button>
-    <button class="nav-tab" onclick="showPage('prep')">Prep Guide</button>
+  <div class="nav-logo">Life</div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('dashboard',this)">Dashboard</button>
+    <button class="nav-link" onclick="showPage('recipes',this)">Recipes</button>
+    <button class="nav-link" onclick="showPage('planner',this)">Meal Planner</button>
   </div>
+  <button class="nav-icon">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+  </button>
 </nav>
 
-<!-- BOWLS PAGE -->
-<div id="page-bowls" class="page active">
-  <div class="hero">
-    <h1>Eat well,<br><em>feel good.</em></h1>
-    <p>Your personalised bowl recipes — high protein, fresh veggies, and bright dressings. No shrimp, no tuna.</p>
-    <div class="stats">
-      <div class="stat"><div class="stat-num">18</div><div class="stat-label">Bowl recipes</div></div>
-      <div class="stat"><div class="stat-num">14</div><div class="stat-label">Days planned</div></div>
-      <div class="stat"><div class="stat-num">~500</div><div class="stat-label">kcal per bowl</div></div>
-      <div class="stat"><div class="stat-num">30g+</div><div class="stat-label">Protein per meal</div></div>
-    </div>
-  </div>
+<!-- ============================
+     DASHBOARD PAGE
+     ============================ -->
+<div id="page-dashboard" class="page active">
+  <div style="padding:32px 40px;">
 
-  <div class="section">
-    <div class="section-title">Rice Bowls <span class="pill">YOUR FAVOURITES</span></div>
-    <div class="bowls-grid">
-      <div class="bowl-card">
-        <div class="bowl-emoji">🍗🌽</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Chicken & Corn Rice Bowl</div>
-          <div class="bowl-tags"><span class="tag">High Protein</span><span class="tag">Easy</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>490</strong><span>kcal</span></div><div class="macro"><strong>38g</strong><span>protein</span></div><div class="macro"><strong>52g</strong><span>carbs</span></div></div>
-        </div>
+    <div class="week-header">
+      <div class="week-title">
+        <h2>Weekly Preview</h2>
+        <p>October 14 – October 20, 2024</p>
       </div>
-      <div class="bowl-card">
-        <div class="bowl-emoji">🥚🥒</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Egg & Veggie Rice Bowl</div>
-          <div class="bowl-tags"><span class="tag">Vegetarian</span><span class="tag">Quick</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>420</strong><span>kcal</span></div><div class="macro"><strong>22g</strong><span>protein</span></div><div class="macro"><strong>54g</strong><span>carbs</span></div></div>
-        </div>
-      </div>
-      <div class="bowl-card">
-        <div class="bowl-emoji">🫘🍅</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Chickpea & Tomato Rice</div>
-          <div class="bowl-tags"><span class="tag">Vegan</span><span class="tag orange">Filling</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>450</strong><span>kcal</span></div><div class="macro"><strong>18g</strong><span>protein</span></div><div class="macro"><strong>65g</strong><span>carbs</span></div></div>
-        </div>
-      </div>
-      <div class="bowl-card">
-        <div class="bowl-emoji">🥗🍗</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Mediterranean Chicken Rice</div>
-          <div class="bowl-tags"><span class="tag">High Protein</span><span class="tag orange">Bold Flavour</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>510</strong><span>kcal</span></div><div class="macro"><strong>42g</strong><span>protein</span></div><div class="macro"><strong>48g</strong><span>carbs</span></div></div>
-        </div>
-      </div>
-      <div class="bowl-card">
-        <div class="bowl-emoji">🌮🍗</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Mexican Chicken Rice Bowl</div>
-          <div class="bowl-tags"><span class="tag orange">Spicy</span><span class="tag">High Protein</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>530</strong><span>kcal</span></div><div class="macro"><strong>40g</strong><span>protein</span></div><div class="macro"><strong>55g</strong><span>carbs</span></div></div>
-        </div>
-      </div>
-      <div class="bowl-card">
-        <div class="bowl-emoji">🍍🍗</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Tropical Chicken Rice</div>
-          <div class="bowl-tags"><span class="tag">Sweet</span><span class="tag">Fresh</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>480</strong><span>kcal</span></div><div class="macro"><strong>36g</strong><span>protein</span></div><div class="macro"><strong>60g</strong><span>carbs</span></div></div>
-        </div>
-      </div>
+      <button class="full-calendar-btn">
+        Full Calendar
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </button>
     </div>
-  </div>
 
-  <div class="section">
-    <div class="section-title">Potato Bowls <span class="pill">YOU'LL LOVE THESE</span></div>
-    <div class="bowls-grid">
-      <div class="bowl-card">
-        <div class="bowl-emoji">🥔🍗</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Chicken & Roasted Potato Power</div>
-          <div class="bowl-tags"><span class="tag">High Protein</span><span class="tag orange">Hearty</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>560</strong><span>kcal</span></div><div class="macro"><strong>44g</strong><span>protein</span></div><div class="macro"><strong>58g</strong><span>carbs</span></div></div>
+    <div class="week-strip">
+      <div class="day-cell"><div class="day-name">Mon</div><div class="day-num">14</div></div>
+      <div class="day-cell active"><div class="day-name">Tue</div><div class="day-num">15</div></div>
+      <div class="day-cell"><div class="day-name">Wed</div><div class="day-num">16</div></div>
+      <div class="day-cell"><div class="day-name">Thu</div><div class="day-num">17</div></div>
+      <div class="day-cell"><div class="day-name">Fri</div><div class="day-num">18</div></div>
+      <div class="day-cell"><div class="day-name">Sat</div><div class="day-num">19</div></div>
+      <div class="day-cell"><div class="day-name">Sun</div><div class="day-num">20</div></div>
+    </div>
+
+    <div class="dashboard-body">
+      <!-- LEFT: Progress -->
+      <div>
+        <div class="progress-card">
+          <h3>Daily Progress</h3>
+
+          <div class="donut-wrap">
+            <svg viewBox="0 0 120 120">
+              <circle class="donut-track" cx="60" cy="60" r="52"/>
+              <circle class="donut-fill" cx="60" cy="60" r="52"/>
+            </svg>
+            <div class="donut-center">
+              <div class="donut-kcal">1,640</div>
+              <div class="donut-label">KCAL LEFT</div>
+            </div>
+          </div>
+
+          <div class="macros-list">
+            <div class="macro-row">
+              <div class="macro-row-header"><span>Protein</span><span>84g / 120g</span></div>
+              <div class="macro-bar"><div class="macro-bar-fill bar-protein"></div></div>
+            </div>
+            <div class="macro-row">
+              <div class="macro-row-header"><span>Carbs</span><span>142g / 210g</span></div>
+              <div class="macro-bar"><div class="macro-bar-fill bar-carbs"></div></div>
+            </div>
+            <div class="macro-row">
+              <div class="macro-row-header"><span>Fats</span><span>42g / 65g</span></div>
+              <div class="macro-bar"><div class="macro-bar-fill bar-fats"></div></div>
+            </div>
+          </div>
+
+          <button class="log-water-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Log Water
+          </button>
+        </div>
+
+        <div class="pro-tip">
+          <div class="pro-tip-icon">💡</div>
+          <div class="pro-tip-text">
+            <h4>Pro Tip</h4>
+            <p>Increasing your protein intake today could help with muscle recovery after your workout.</p>
+          </div>
         </div>
       </div>
-      <div class="bowl-card">
-        <div class="bowl-emoji">🥚🥔</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Egg & Potato Salad Bowl</div>
-          <div class="bowl-tags"><span class="tag">Vegetarian</span><span class="tag">Easy</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>440</strong><span>kcal</span></div><div class="macro"><strong>24g</strong><span>protein</span></div><div class="macro"><strong>50g</strong><span>carbs</span></div></div>
+
+      <!-- RIGHT: Today's Meals -->
+      <div class="meals-section">
+        <div class="meals-header">
+          <h2>Today's Meals</h2>
+          <div class="date-badge">Tuesday, Oct 15</div>
         </div>
-      </div>
-      <div class="bowl-card">
-        <div class="bowl-emoji">🫘🥔</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Chickpea & Sweet Potato Bowl</div>
-          <div class="bowl-tags"><span class="tag">Vegan</span><span class="tag">Fibre-Rich</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>470</strong><span>kcal</span></div><div class="macro"><strong>16g</strong><span>protein</span></div><div class="macro"><strong>72g</strong><span>carbs</span></div></div>
+
+        <!-- Breakfast -->
+        <div class="meal-card">
+          <div class="meal-img-wrap" style="background:linear-gradient(135deg,#a8d8a8,#4caf50);">
+            <div class="food-img">🥑🍳</div>
+            <span class="meal-type-badge">Breakfast</span>
+          </div>
+          <div class="meal-info">
+            <div class="meal-info-top">
+              <div class="meal-top-row">
+                <div class="meal-name">Smashed Avocado &amp; Poached Egg</div>
+                <button class="more-btn">•••</button>
+              </div>
+              <div class="meal-meta">
+                <span>⏱ 15 mins</span>
+                <span>🔥 340 kcal</span>
+              </div>
+              <div class="meal-tags">
+                <span class="meal-tag">VEGETARIAN</span>
+                <span class="meal-tag">HIGH FIBER</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:18px 16px 18px 0; display:flex; align-items:flex-end;">
+            <div class="meal-action done">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="bowl-card">
-        <div class="bowl-emoji">🥑🥔</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Avocado Potato & Egg Bowl</div>
-          <div class="bowl-tags"><span class="tag">Healthy Fats</span><span class="tag">Fresh</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>520</strong><span>kcal</span></div><div class="macro"><strong>20g</strong><span>protein</span></div><div class="macro"><strong>48g</strong><span>carbs</span></div></div>
+
+        <!-- Lunch -->
+        <div class="meal-card">
+          <div class="meal-img-wrap" style="background:linear-gradient(135deg,#c8e6c9,#388e3c);">
+            <div class="food-img">🥗🫒</div>
+            <span class="meal-type-badge">Lunch</span>
+          </div>
+          <div class="meal-info">
+            <div class="meal-info-top">
+              <div class="meal-top-row">
+                <div class="meal-name">Mediterranean Quinoa Bowl</div>
+                <button class="more-btn">•••</button>
+              </div>
+              <div class="meal-meta">
+                <span>⏱ 20 mins</span>
+                <span>🔥 480 kcal</span>
+              </div>
+              <div class="meal-tags">
+                <span class="meal-tag">VEGAN OPTION</span>
+                <span class="meal-tag">LOW GI</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:18px 16px 18px 0; display:flex; align-items:flex-end;">
+            <div class="meal-action pending">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="bowl-card">
-        <div class="bowl-emoji">🌿🥔</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Herb Chicken Potato Bowl</div>
-          <div class="bowl-tags"><span class="tag">High Protein</span><span class="tag orange">Lemon-Herb</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>490</strong><span>kcal</span></div><div class="macro"><strong>40g</strong><span>protein</span></div><div class="macro"><strong>46g</strong><span>carbs</span></div></div>
-        </div>
-      </div>
-      <div class="bowl-card">
-        <div class="bowl-emoji">🫚🥔</div>
-        <div class="bowl-body">
-          <div class="bowl-name">Tahini Potato & Veggie Bowl</div>
-          <div class="bowl-tags"><span class="tag">Vegan</span><span class="tag orange">Creamy</span></div>
-          <div class="bowl-macros"><div class="macro"><strong>460</strong><span>kcal</span></div><div class="macro"><strong>14g</strong><span>protein</span></div><div class="macro"><strong>56g</strong><span>carbs</span></div></div>
+
+        <!-- Dinner -->
+        <div class="meal-card">
+          <div class="meal-img-wrap" style="background:linear-gradient(135deg,#ffccbc,#ff7043);">
+            <div class="food-img">🐟🍋</div>
+            <span class="meal-type-badge">Dinner</span>
+          </div>
+          <div class="meal-info">
+            <div class="meal-info-top">
+              <div class="meal-top-row">
+                <div class="meal-name">Lemon Herb Grilled Salmon</div>
+                <button class="more-btn">•••</button>
+              </div>
+              <div class="meal-meta">
+                <span>⏱ 25 mins</span>
+                <span>🔥 520 kcal</span>
+              </div>
+              <div class="meal-tags">
+                <span class="meal-tag">HIGH PROTEIN</span>
+                <span class="meal-tag">KETO</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:18px 16px 18px 0; display:flex; align-items:flex-end;">
+            <div class="meal-action pending">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- PLAN PAGE -->
-<div id="page-plan" class="page">
-  <div class="hero">
-    <h1>Your <em>2-week</em><br>diet plan.</h1>
-    <p>Morning meals at home + afternoon bowl at work (3–4pm). Designed for weight loss, ~1400 kcal/day.</p>
-  </div>
-  <div class="section">
-    <div class="week-toggle">
-      <button class="week-btn active" onclick="showWeek(1,this)">Week 1</button>
-      <button class="week-btn" onclick="showWeek(2,this)">Week 2</button>
+<!-- ============================
+     MEAL PLANNER PAGE
+     ============================ -->
+<div id="page-planner" class="page">
+  <!-- Sidebar -->
+  <div class="planner-sidebar">
+    <div class="recommended-card">
+      <div class="rec-header">
+        <h3>Recommended</h3>
+        <button>✦</button>
+      </div>
+      <p class="rec-subtitle">Drag recipes to your planner.</p>
+      <div class="rec-list">
+        <div class="rec-item">
+          <div class="food-img-sm bg-green">🥗</div>
+          <div class="rec-item-info">
+            <div class="rec-item-name">Green Detox Bowl</div>
+            <div class="rec-item-tag tag-vegan">⊘ VEGAN</div>
+          </div>
+        </div>
+        <div class="rec-item">
+          <div class="food-img-sm bg-quinoa">🌾</div>
+          <div class="rec-item-info">
+            <div class="rec-item-name">Quinoa Power Mix</div>
+            <div class="rec-item-tag tag-protein">↑ HIGH PROTEIN</div>
+          </div>
+        </div>
+        <div class="rec-item">
+          <div class="food-img-sm bg-honey">🍯</div>
+          <div class="rec-item-info">
+            <div class="rec-item-name">Honey Glazed Salmon</div>
+            <div class="rec-item-tag tag-keto">◆ KETO FRIENDLY</div>
+          </div>
+        </div>
+      </div>
+      <button class="create-recipe-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Create New Recipe
+      </button>
     </div>
-    <div class="plan-wrap">
-      <table class="plan-table" id="plan-week1">
-        <thead><tr><th>Day</th><th>Morning (Home)</th><th>Afternoon Bowl (Work)</th><th>Total</th></tr></thead>
-        <tbody>
-          <tr><td><span class="day-badge">Mon</span></td><td><div class="meal-name">Greek Yogurt & Berries</div><div class="meal-note">200g yogurt, mixed berries, 1 tsp honey · ~300 kcal</div></td><td><div class="meal-name">Mediterranean Chicken Rice Bowl</div><div class="meal-note">Chicken, rice, cucumber, tomato, olives · ~510 kcal</div></td><td>~810 kcal</td></tr>
-          <tr><td><span class="day-badge">Tue</span></td><td><div class="meal-name">Oat Porridge & Banana</div><div class="meal-note">60g oats, milk, banana, cinnamon · ~380 kcal</div></td><td><div class="meal-name">Egg & Veggie Rice Bowl</div><div class="meal-note">2 eggs, rice, corn, cucumber, cherry tomato · ~420 kcal</div></td><td>~800 kcal</td></tr>
-          <tr><td><span class="day-badge">Wed</span></td><td><div class="meal-name">Scrambled Eggs on Toast</div><div class="meal-note">2 eggs, 1 slice wholegrain, olive oil · ~350 kcal</div></td><td><div class="meal-name">Chicken & Corn Rice Bowl</div><div class="meal-note">Chicken breast, rice, corn, tomato, lemon dressing · ~490 kcal</div></td><td>~840 kcal</td></tr>
-          <tr><td><span class="day-badge">Thu</span></td><td><div class="meal-name">Smoothie — Banana & Oat</div><div class="meal-note">Banana, 30g oats, milk, nut butter · ~340 kcal</div></td><td><div class="meal-name">Chickpea & Tomato Rice</div><div class="meal-note">Chickpeas, rice, tomato, red onion, cumin dressing · ~450 kcal</div></td><td>~790 kcal</td></tr>
-          <tr><td><span class="day-badge">Fri</span></td><td><div class="meal-name">Greek Yogurt & Granola</div><div class="meal-note">200g yogurt, 30g granola, banana · ~360 kcal</div></td><td><div class="meal-name">Tropical Chicken Rice</div><div class="meal-note">Chicken, rice, pineapple, corn, sweet chili · ~480 kcal</div></td><td>~840 kcal</td></tr>
-          <tr><td><span class="day-badge">Sat</span></td><td><div class="meal-name">Avocado Toast & Eggs</div><div class="meal-note">½ avocado, 1 slice toast, 2 eggs, chili flakes · ~420 kcal</div></td><td><div class="meal-name">Herb Chicken Potato Bowl</div><div class="meal-note">Chicken, roasted potato, greens, lemon-herb dressing · ~490 kcal</div></td><td>~910 kcal</td></tr>
-          <tr><td><span class="day-badge">Sun</span></td><td><div class="meal-name">Oat Pancakes (2)</div><div class="meal-note">Oats + egg + banana batter, fresh fruit · ~380 kcal</div></td><td><div class="meal-name">Chicken & Roasted Potato Power</div><div class="meal-note">Chicken, roasted potato, red onion, yogurt dressing · ~560 kcal</div></td><td>~940 kcal</td></tr>
-        </tbody>
-      </table>
-      <table class="plan-table" id="plan-week2" style="display:none">
-        <thead><tr><th>Day</th><th>Morning (Home)</th><th>Afternoon Bowl (Work)</th><th>Total</th></tr></thead>
-        <tbody>
-          <tr><td><span class="day-badge">Mon</span></td><td><div class="meal-name">Overnight Oats</div><div class="meal-note">60g oats, yogurt, berries, chia seeds — prep night before · ~370 kcal</div></td><td><div class="meal-name">Mexican Chicken Rice Bowl</div><div class="meal-note">Chicken, rice, black beans, corn, lime, chili · ~530 kcal</div></td><td>~900 kcal</td></tr>
-          <tr><td><span class="day-badge">Tue</span></td><td><div class="meal-name">Boiled Eggs & Fruit</div><div class="meal-note">2 boiled eggs, orange, small handful nuts · ~310 kcal</div></td><td><div class="meal-name">Egg & Potato Salad Bowl</div><div class="meal-note">2 eggs, roasted potato, cucumber, mustard dressing · ~440 kcal</div></td><td>~750 kcal</td></tr>
-          <tr><td><span class="day-badge">Wed</span></td><td><div class="meal-name">Greek Yogurt & Berries</div><div class="meal-note">200g yogurt, mixed berries, 1 tsp honey · ~300 kcal</div></td><td><div class="meal-name">Avocado Potato & Egg Bowl</div><div class="meal-note">½ avocado, roasted potato, 2 eggs, lemon · ~520 kcal</div></td><td>~820 kcal</td></tr>
-          <tr><td><span class="day-badge">Thu</span></td><td><div class="meal-name">Oat Porridge & Apple</div><div class="meal-note">60g oats, milk, apple, cinnamon · ~360 kcal</div></td><td><div class="meal-name">Tahini Potato & Veggie Bowl</div><div class="meal-note">Roasted potato, chickpeas, tomato, tahini dressing · ~460 kcal</div></td><td>~820 kcal</td></tr>
-          <tr><td><span class="day-badge">Fri</span></td><td><div class="meal-name">Smoothie — Berry & Banana</div><div class="meal-note">Frozen berries, banana, yogurt, oats · ~330 kcal</div></td><td><div class="meal-name">Chickpea & Sweet Potato Bowl</div><div class="meal-note">Chickpeas, sweet potato, spinach, cumin-lemon · ~470 kcal</div></td><td>~800 kcal</td></tr>
-          <tr><td><span class="day-badge">Sat</span></td><td><div class="meal-name">Scrambled Eggs & Avocado</div><div class="meal-note">2 eggs, ½ avocado, cherry tomato, toast · ~430 kcal</div></td><td><div class="meal-name">Mediterranean Chicken Rice Bowl</div><div class="meal-note">Chicken, rice, olives, cucumber, feta · ~510 kcal</div></td><td>~940 kcal</td></tr>
-          <tr><td><span class="day-badge">Sun</span></td><td><div class="meal-name">Banana Oat Pancakes (2)</div><div class="meal-note">Oat batter, berries, small drizzle honey · ~380 kcal</div></td><td><div class="meal-name">Herb Chicken Potato Bowl</div><div class="meal-note">Chicken, roasted potato, greens, lemon-herb dressing · ~490 kcal</div></td><td>~870 kcal</td></tr>
-        </tbody>
-      </table>
+  </div>
+
+  <!-- Main -->
+  <div class="planner-main">
+    <div class="planner-main-header">
+      <div>
+        <h3>Your Nutrition Plan</h3>
+        <h2>October 21 – November 3, 2024</h2>
+      </div>
+      <div class="week-toggle">
+        <button class="week-toggle-btn active" onclick="switchPlannerWeek(1,this)">Week 1</button>
+        <button class="week-toggle-btn" onclick="switchPlannerWeek(2,this)">Week 2</button>
+      </div>
+    </div>
+
+    <div class="planner-grid">
+      <div class="planner-grid-header">
+        <div class="pg-day-col"><div class="pg-day-name">MON</div><div class="pg-day-num">21</div></div>
+        <div class="pg-day-col"><div class="pg-day-name">TUE</div><div class="pg-day-num">22</div></div>
+        <div class="pg-day-col today"><div class="pg-day-name">WED</div><div class="pg-day-num">23</div></div>
+        <div class="pg-day-col"><div class="pg-day-name">THU</div><div class="pg-day-num">24</div></div>
+        <div class="pg-day-col"><div class="pg-day-name">FRI</div><div class="pg-day-num">25</div></div>
+        <div class="pg-day-col"><div class="pg-day-name">SAT</div><div class="pg-day-num">26</div></div>
+        <div class="pg-day-col"><div class="pg-day-name">SUN</div><div class="pg-day-num">27</div></div>
+      </div>
+      <div class="planner-grid-body">
+        <!-- Mon -->
+        <div class="pg-col">
+          <div class="pg-meal-slot"><div class="pg-slot-label">Breakfast</div><div class="pg-meal-card">Avocado Toast with...<div class="pg-meal-kcal">320 kcal</div></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Lunch</div><div class="pg-meal-card">Grilled Chicken...<div class="pg-meal-kcal">450 kcal</div></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Dinner</div><button class="pg-add-btn"><span style="font-size:1rem">⊕</span> Add Recipe</button></div>
+        </div>
+        <!-- Tue -->
+        <div class="pg-col">
+          <div class="pg-meal-slot"><div class="pg-slot-label">Breakfast</div><div class="pg-meal-card">Berry Protein Smoothie...<div class="pg-meal-kcal"></div></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Lunch</div><div class="pg-empty"><span class="pg-empty-icon">⊕</span></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Dinner</div><div class="pg-meal-card">Baked Tofu with Stir-fr...<div class="pg-meal-kcal"></div></div></div>
+        </div>
+        <!-- Wed (today) -->
+        <div class="pg-col today">
+          <div class="pg-meal-slot"><div class="pg-slot-label">Breakfast</div><div class="pg-meal-card">Oatmeal with Almonds</div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Lunch</div><div class="pg-meal-card">Lentil Soup &amp; Bread</div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Dinner</div><button class="pg-add-btn" style="border-color:var(--green-mid);color:var(--green-mid)"><span style="font-size:1rem">⊕</span></button></div>
+        </div>
+        <!-- Thu–Sun empty -->
+        <div class="pg-col">
+          <div class="pg-meal-slot"><div class="pg-slot-label">Breakfast</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Lunch</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Dinner</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+        </div>
+        <div class="pg-col">
+          <div class="pg-meal-slot"><div class="pg-slot-label">Breakfast</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Lunch</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Dinner</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+        </div>
+        <div class="pg-col">
+          <div class="pg-meal-slot"><div class="pg-slot-label">Breakfast</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Lunch</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Dinner</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+        </div>
+        <div class="pg-col">
+          <div class="pg-meal-slot"><div class="pg-slot-label">Breakfast</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Lunch</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+          <div class="pg-meal-slot"><div class="pg-slot-label">Dinner</div><div class="pg-empty"><span class="pg-empty-icon">⠿</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="planner-stats">
+      <div class="planner-stat-card">
+        <div class="stat-icon green">⚡</div>
+        <div class="stat-info">
+          <label>Avg Daily Calories</label>
+          <p>1,850 kcal</p>
+        </div>
+      </div>
+      <div class="planner-stat-card">
+        <div class="stat-icon orange">🍽</div>
+        <div class="stat-info">
+          <label>Macros Breakdown</label>
+          <p style="font-size:0.9rem;">40% Carbs / 30% Protein</p>
+        </div>
+      </div>
+      <div class="planner-stat-card grocery">
+        <div class="stat-icon white">🛒</div>
+        <div class="stat-info">
+          <label>Grocery List</label>
+          <p>42 Items Ready</p>
+        </div>
+        <div class="stat-arrow">›</div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- SHOPPING PAGE -->
-<div id="page-shopping" class="page">
-  <div class="hero">
-    <h1>Shopping <em>list.</em></h1>
-    <p>Everything you need for 2 weeks, sorted by supermarket section. Tap items to check them off.</p>
+<!-- ============================
+     RECIPES PAGE
+     ============================ -->
+<div id="page-recipes" class="page">
+  <div class="recipe-hero" style="background:linear-gradient(135deg,#b2ebf2,#26c6da,#a5d6a7);">
+    <div class="food-img" style="width:100%;height:100%;font-size:6rem;background:linear-gradient(135deg,#4a7c59,#2d6a35,#1a3c1e);">🥗</div>
+    <div class="recipe-hero-content">
+      <div class="recipe-hero-tags">
+        <span class="hero-tag vegan">Vegan</span>
+        <span class="hero-tag fiber">High Fiber</span>
+      </div>
+      <h1 class="recipe-hero-title">Rainbow Veggie Bowl</h1>
+      <p class="recipe-hero-desc">A nutrient-dense masterpiece featuring crunchy raw vegetables and roasted roots atop a protein-rich grain base.</p>
+    </div>
   </div>
-  <div class="section">
-    <div class="shop-grid">
-      <div class="shop-section">
-        <h4>🛒 Proteins</h4>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Chicken breast (1.5kg / week)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Eggs (x18 per week)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Greek yogurt (1kg tub)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Canned chickpeas (4 cans)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Canned black beans (2 cans)</label></div>
+
+  <div class="recipe-body">
+    <div class="recipe-tabs">
+      <button class="recipe-tab active">Rainbow Veggie Bowl</button>
+      <button class="recipe-tab">Chicken & Corn Rice Bowl</button>
+      <button class="recipe-tab">Egg & Potato Salad Bowl</button>
+      <button class="recipe-tab">Mediterranean Chicken Rice</button>
+      <button class="recipe-tab">+ Add Recipe</button>
+    </div>
+
+    <div class="recipe-stats-row">
+      <div class="recipe-stat">
+        <div class="recipe-stat-icon">⏱</div>
+        <div class="recipe-stat-label">Prep Time</div>
+        <div class="recipe-stat-val">15 min</div>
       </div>
-      <div class="shop-section">
-        <h4>🌾 Carbs & Grains</h4>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>White/brown rice (2kg bag)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Rolled oats (1kg bag)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Wholegrain bread (1 loaf)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Granola (small bag)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Chia seeds (small bag)</label></div>
+      <div class="recipe-stat">
+        <div class="recipe-stat-icon">🍽</div>
+        <div class="recipe-stat-label">Cook Time</div>
+        <div class="recipe-stat-val">20 min</div>
       </div>
-      <div class="shop-section">
-        <h4>🥦 Vegetables</h4>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Potatoes (2kg)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Sweet potatoes (1kg)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Cherry tomatoes (500g)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Cucumber (x3)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Red onion (x3)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Corn (canned, x3)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Spinach / mixed greens (bag)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Avocados (x4)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Olives (small jar)</label></div>
+      <div class="recipe-stat">
+        <div class="recipe-stat-icon">⚡</div>
+        <div class="recipe-stat-label">Calories</div>
+        <div class="recipe-stat-val">420 kcal</div>
       </div>
-      <div class="shop-section">
-        <h4>🍌 Fruit</h4>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Bananas (bunch)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Frozen berries (1kg bag)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Apples (x4)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Oranges (x4)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Pineapple (canned chunks)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Lemons (x4)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Limes (x3)</label></div>
+      <div class="recipe-stat">
+        <div class="recipe-stat-icon">👥</div>
+        <div class="recipe-stat-label">Servings</div>
+        <div class="recipe-stat-val">2 Portions</div>
       </div>
-      <div class="shop-section">
-        <h4>🫙 Pantry & Dressings</h4>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Olive oil</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Tahini</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Dijon mustard</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Sweet chili sauce</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Honey (small jar)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Cumin powder</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Paprika / chili flakes</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Garlic (bulb)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Soy sauce (small bottle)</label></div>
+    </div>
+
+    <div class="recipe-detail">
+      <div class="ingredients-card">
+        <h3>🛒 Ingredients</h3>
+        <div class="ing-list">
+          <div class="ing-item"><div class="ing-check"></div>1 cup Quinoa, cooked</div>
+          <div class="ing-item"><div class="ing-check"></div>1 cup Purple Cabbage, shredded</div>
+          <div class="ing-item"><div class="ing-check"></div>2 Carrots, julienned</div>
+          <div class="ing-item"><div class="ing-check"></div>1 Red Bell Pepper, sliced</div>
+          <div class="ing-item"><div class="ing-check"></div>½ cup Edamame, steamed</div>
+          <div class="ing-item"><div class="ing-check"></div>1 Sweet Potato, cubed and roasted</div>
+          <div class="ing-item"><div class="ing-check"></div>Tahini Dressing (2 tbsp)</div>
+        </div>
+        <button class="cook-now-btn">🍳 Cook Now</button>
       </div>
-      <div class="shop-section">
-        <h4>🥛 Dairy & Extras</h4>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Milk (1L)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Feta cheese (small block)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Nut butter (peanut/almond)</label></div>
-        <div class="shop-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Mixed nuts (small bag)</label></div>
+
+      <div class="instructions-card">
+        <h3>📋 Instructions</h3>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-title">Prepare the Grain Base</div>
+              <div class="step-text">Rinse quinoa under cold water. Combine 1 cup quinoa with 2 cups water in a small pot. Bring to a boil, then cover and simmer for 15 minutes until fluffy.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-title">Roast the Sweet Potatoes</div>
+              <div class="step-text">Toss sweet potato cubes with olive oil, salt, and pepper. Roast at 400°F (200°C) for 20 minutes until tender and slightly caramelized at the edges.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-title">Chop and Steam</div>
+              <div class="step-text">While roasting, julienne the carrots and shred the cabbage. Briefly steam the edamame for 3–5 minutes until bright green and tender.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-title">Assemble and Dress</div>
+              <div class="step-text">Divide the cooked quinoa into two bowls. Arrange the vegetables in colorful sections around the bowl. Drizzle generously with creamy tahini dressing before serving.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nutrition-card">
+      <h3>📊 Nutritional Breakdown</h3>
+      <div class="nutrition-rows">
+        <div class="nutrition-row">
+          <div class="nutrition-row-header"><span class="nutrition-name">Protein</span><span class="nutrition-val">18g</span></div>
+          <div class="nutrition-bar"><div class="nutrition-bar-fill nb-protein"></div></div>
+          <div class="nutrition-note">75% of your recommended post-workout target.</div>
+        </div>
+        <div class="nutrition-row">
+          <div class="nutrition-row-header"><span class="nutrition-name">Carbohydrates</span><span class="nutrition-val">54g</span></div>
+          <div class="nutrition-bar"><div class="nutrition-bar-fill nb-carbs"></div></div>
+          <div class="nutrition-note">Sustainably sourced complex carbs from quinoa and tubers.</div>
+        </div>
+        <div class="nutrition-row">
+          <div class="nutrition-row-header"><span class="nutrition-name">Healthy Fats</span><span class="nutrition-val">14g</span></div>
+          <div class="nutrition-bar"><div class="nutrition-bar-fill nb-fats"></div></div>
+          <div class="nutrition-note">Primarily monounsaturated fats from the tahini dressing.</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- PREP PAGE -->
-<div id="page-prep" class="page">
-  <div class="hero">
-    <h1>Sunday <em>prep</em><br>guide.</h1>
-    <p>90 minutes on Sunday = effortless meals all week. Here's the exact order to do everything.</p>
+<footer>
+  <span>© 2024 Life Nutrition. Healthy Living Made Simple.</span>
+  <div>
+    <a href="#">Settings</a>
+    <a href="#">Help</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
   </div>
-  <div class="section">
-    <div class="section-title">Sunday Prep Order</div>
-    <div class="prep-steps">
-      <div class="prep-step"><div class="step-num">1</div><div class="step-content"><h4>Cook rice (20 min, hands-off)</h4><p>Rinse 400g rice, cook in pot (2:1 water ratio). Cover and leave on low. Spread on a tray to cool completely before storing.</p></div></div>
-      <div class="prep-step"><div class="step-num">2</div><div class="step-content"><h4>Roast potatoes & sweet potatoes (30 min, hands-off)</h4><p>Cube 1kg potatoes + 500g sweet potato. Toss with olive oil, salt, paprika. Roast at 200°C on two trays. Check rice while this cooks.</p></div></div>
-      <div class="prep-step"><div class="step-num">3</div><div class="step-content"><h4>Cook chicken breast (20 min)</h4><p>Season 4–5 chicken breasts with olive oil, salt, garlic, herbs. Pan-fry or bake until cooked through. Let rest, then slice into strips. Store cold.</p></div></div>
-      <div class="prep-step"><div class="step-num">4</div><div class="step-content"><h4>Boil eggs (10 min)</h4><p>Boil 6 eggs for 8 minutes for hard-boiled. Cool in ice water, peel, and store in the fridge (or keep unpeeled up to 1 week).</p></div></div>
-      <div class="prep-step"><div class="step-num">5</div><div class="step-content"><h4>Prep fresh veg (10 min)</h4><p>Slice cucumber, halve cherry tomatoes, dice red onion. Store each separately in small containers or zip bags.</p></div></div>
-      <div class="prep-step"><div class="step-num">6</div><div class="step-content"><h4>Make 2 dressings (5 min)</h4><p><strong>Lemon-olive oil:</strong> 3 tbsp olive oil + juice of 1 lemon + salt + mustard. <strong>Tahini:</strong> 2 tbsp tahini + lemon juice + water + garlic. Store in jars.</p></div></div>
-      <div class="prep-step"><div class="step-num">7</div><div class="step-content"><h4>Store everything correctly</h4><p>Pack cooled rice and potatoes into airtight containers. Label with date. Chicken in a separate airtight container. Everything lasts 4 days in the fridge.</p></div></div>
-    </div>
-  </div>
-
-  <div class="section" style="padding-top:0">
-    <div class="section-title">Storage Guide</div>
-    <div class="storage-grid">
-      <div class="storage-card"><div class="icon">🍗</div><h4>Cooked Chicken</h4><p>Airtight container, sliced and ready. Keep on a mid-fridge shelf. Separate from other items.</p><span class="duration">Up to 4 days</span></div>
-      <div class="storage-card"><div class="icon">🍚</div><h4>Cooked Rice</h4><p>Cool completely first — never store hot rice. Airtight container. For week 2, freeze half in portions.</p><span class="duration">4 days fridge · 2 months frozen</span></div>
-      <div class="storage-card"><div class="icon">🥔</div><h4>Roasted Potatoes</h4><p>Cool first, then airtight container. Don't freeze — texture suffers. Reheat in a dry pan or eat cold.</p><span class="duration">Up to 4 days</span></div>
-      <div class="storage-card"><div class="icon">🥚</div><h4>Boiled Eggs</h4><p>Keep unpeeled in the fridge for up to 1 week. Peel just before eating to keep them fresh.</p><span class="duration">Up to 7 days unpeeled</span></div>
-      <div class="storage-card"><div class="icon">🥒</div><h4>Cut Vegetables</h4><p>Each veg in its own small container or bag. Tomatoes and cucumber stay crispest when stored dry.</p><span class="duration">Up to 4 days</span></div>
-      <div class="storage-card"><div class="icon">🫙</div><h4>Dressings</h4><p>Glass jars with lids. Tahini dressing may thicken — add a splash of water and shake before using.</p><span class="duration">Up to 5 days</span></div>
-    </div>
-  </div>
-
-  <div class="section" style="padding-top:0">
-    <div class="section-title">Packing Your Work Bowl</div>
-    <div class="prep-steps">
-      <div class="prep-step"><div class="step-num">☀️</div><div class="step-content"><h4>Morning of (5 minutes)</h4><p>Grab your base (rice or potato), add protein (chicken or eggs), pile on the fresh veg, drizzle your dressing over last. Seal. The bowls taste great cold — no microwave needed.</p></div></div>
-      <div class="prep-step"><div class="step-num">🧊</div><div class="step-content"><h4>At work</h4><p>Refrigerate until 3–4pm. Eat directly from the container. No heating required — these bowls are designed to be eaten at room temperature, just like the restaurant versions you loved.</p></div></div>
-    </div>
-  </div>
-</div>
+</footer>
 
 <script>
-function showPage(name) {
+function showPage(name, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
-  event.target.classList.add('active');
+  btn.classList.add('active');
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
-function showWeek(num, btn) {
-  document.getElementById('plan-week1').style.display = num===1 ? '' : 'none';
-  document.getElementById('plan-week2').style.display = num===2 ? '' : 'none';
-  document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
+function switchPlannerWeek(num, btn) {
+  document.querySelectorAll('.week-toggle-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
 
-function toggleCheck(el) {
-  el.classList.toggle('checked');
-  el.querySelector('input').checked = el.classList.contains('checked');
-}
+// Ingredient checkboxes
+document.querySelectorAll('.ing-check').forEach(box => {
+  box.addEventListener('click', function() {
+    if (this.textContent === '✓') {
+      this.textContent = '';
+      this.style.background = '';
+      this.style.borderColor = '';
+      this.style.color = '';
+    } else {
+      this.textContent = '✓';
+      this.style.background = 'var(--green-dark)';
+      this.style.borderColor = 'var(--green-dark)';
+      this.style.color = '#fff';
+      this.style.fontSize = '0.7rem';
+    }
+  });
+});
+
+// Week strip day selector
+document.querySelectorAll('.day-cell').forEach(cell => {
+  cell.addEventListener('click', function() {
+    document.querySelectorAll('.day-cell').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Recipe tabs
+document.querySelectorAll('.recipe-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.recipe-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
 </script>
 </body>
 </html>
