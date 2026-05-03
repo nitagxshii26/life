@@ -240,7 +240,7 @@ footer a:hover{color:var(--txt)}
         </div>
         <button class="btn-dark" id="water-btn" onclick="logWater()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6 10 4 14 4 17a8 8 0 0016 0c0-3-2-7-8-15z"/></svg>
-          Log Water &nbsp;<span id="water-count" style="background:rgba(255,255,255,.25);border-radius:10px;padding:1px 7px;font-size:.78rem">0 / 8</span>
+          Log Water &nbsp;<span id="water-count" onclick="event.stopPropagation();removeWater()" title="Click to remove a glass" style="background:rgba(255,255,255,.25);border-radius:10px;padding:1px 7px;font-size:.78rem;cursor:pointer">0 / 8</span>
         </button>
       </div>
       <div class="protip">
@@ -606,11 +606,17 @@ function toggleDone(btn){
 
 // ── WATER LOG ────────────────────────────────────────────────────────────────
 let waterGlasses=0;
-function logWater(){
-  if(waterGlasses<8)waterGlasses++;
+function updateWaterUI(){
   document.getElementById('water-count').textContent=waterGlasses+' / 8';
   const btn=document.getElementById('water-btn');
-  if(waterGlasses>=8){btn.style.background='var(--gmid)';btn.title='Daily goal reached!';}
+  btn.style.background=waterGlasses>=8?'var(--gmid)':'';
+  btn.title=waterGlasses>=8?'Daily goal reached!':'';
+}
+function logWater(){
+  if(waterGlasses<8){waterGlasses++;updateWaterUI();}
+}
+function removeWater(){
+  if(waterGlasses>0){waterGlasses--;updateWaterUI();}
 }
 
 buildWeekStrip();
