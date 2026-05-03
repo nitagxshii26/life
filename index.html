@@ -101,20 +101,63 @@ footer a:hover{color:var(--txt)}
 .more{background:none;border:none;color:var(--mu);letter-spacing:2px;font-size:.9rem;padding:0 3px}
 
 /* BOWLS */
+.bowls-layout{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 58px)}
+.bowls-sidebar{background:var(--sur);border-right:1px solid var(--bor);overflow-y:auto;position:sticky;top:58px;height:calc(100vh - 58px)}
+.bs-header{padding:18px 18px 12px;border-bottom:1px solid var(--bor)}
+.bs-header h3{font-size:.9rem;font-weight:700;margin-bottom:2px}
+.bs-header p{font-size:.74rem;color:var(--mu)}
+.bs-section-label{font-size:.65rem;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;padding:14px 18px 6px}
+.bs-item{display:flex;align-items:center;gap:11px;padding:9px 18px;cursor:pointer;transition:background .15s;border-left:3px solid transparent}
+.bs-item:hover{background:var(--gp)}
+.bs-item.active{background:var(--gl);border-left-color:var(--gm)}
+.bs-emoji{width:38px;height:38px;border-radius:var(--rsm);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.bs-info{flex:1;min-width:0}
+.bs-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bs-kcal{font-size:.72rem;color:var(--mu);margin-top:1px}
+.bs-arrow{color:var(--li);font-size:.9rem;flex-shrink:0}
+.bs-item.active .bs-arrow{color:var(--gm)}
+
+/* BOWL DETAIL */
+.bowl-detail{padding:32px 36px}
+.bd-hero{border-radius:var(--rl);overflow:hidden;height:200px;display:flex;align-items:center;justify-content:center;font-size:6rem;margin-bottom:24px;position:relative}
+.bd-hero-tags{position:absolute;top:14px;left:14px;display:flex;gap:7px}
+.bd-title{font-size:1.4rem;font-weight:700;margin-bottom:6px}
+.bd-desc{font-size:.84rem;color:var(--mu);line-height:1.6;margin-bottom:22px;max-width:600px}
+.bd-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.bd-stat{background:var(--sur);border:1px solid var(--bor);border-radius:var(--r);padding:14px;text-align:center}
+.bd-stat-i{font-size:1rem;margin-bottom:4px}
+.bd-stat-l{font-size:.6rem;font-weight:700;letter-spacing:.7px;color:var(--mu);text-transform:uppercase;margin-bottom:3px}
+.bd-stat-v{font-size:.92rem;font-weight:700;color:var(--gm)}
+.bd-grid{display:grid;grid-template-columns:260px 1fr;gap:18px;margin-bottom:18px}
+.bd-card{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);padding:20px}
+.bd-card h3{font-size:.85rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.bd-ing-list{display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
+.bd-ii{display:flex;align-items:center;gap:9px;font-size:.82rem;cursor:pointer}
+.bd-ick{width:17px;height:17px;border:1.5px solid var(--bor);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;transition:all .15s}
+.bd-ii.ck .bd-ick{background:var(--gd);border-color:var(--gd);color:#fff}
+.bd-ii.ck span{text-decoration:line-through;color:var(--mu)}
+.bd-steps{display:flex;flex-direction:column;gap:15px}
+.bd-step{display:flex;gap:12px}
+.bd-snum{width:26px;height:26px;background:var(--gd);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:1px}
+.bd-stitle{font-size:.83rem;font-weight:600;color:var(--gm);margin-bottom:3px}
+.bd-stext{font-size:.79rem;color:var(--mu);line-height:1.6}
+.bd-nut{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);padding:20px}
+.bd-nut h3{font-size:.85rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:7px}
+.bd-nut-rows{display:flex;flex-direction:column;gap:13px}
+.bd-nr-h{display:flex;justify-content:space-between;margin-bottom:4px}
+.bd-nr-name{font-size:.86rem;font-weight:500}
+.bd-nr-val{font-size:.83rem;font-weight:700;color:var(--gm)}
+.bd-nbar{height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-bottom:3px}
+.bd-nbar-f{height:100%;border-radius:3px}
+.bd-nnote{font-size:.69rem;color:var(--mu)}
+.bd-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:400px;color:var(--mu);gap:12px}
+.bd-empty-em{font-size:3.5rem;opacity:.4}
+.bd-empty p{font-size:.88rem}
+
 .bstats{display:flex;gap:12px;margin-bottom:26px;flex-wrap:wrap}
 .bstat{background:var(--sur);border:1px solid var(--bor);border-radius:var(--r);padding:14px 18px;flex:1;min-width:120px}
 .bstat-n{font-size:1.7rem;font-weight:700;color:var(--gm);line-height:1}
 .bstat-l{font-size:.73rem;color:var(--mu);margin-top:3px}
-.bowls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:16px;margin-bottom:32px}
-.bcard{background:var(--sur);border-radius:var(--rl);border:1px solid var(--bor);overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s}
-.bcard:hover{transform:translateY(-3px);box-shadow:var(--shm)}
-.bcard-img{height:96px;display:flex;align-items:center;justify-content:center;font-size:2.8rem}
-.bcard-b{padding:13px 15px 15px}
-.bcard-name{font-weight:700;font-size:.88rem;margin-bottom:7px}
-.bcard-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
-.bmacros{display:flex;gap:12px;font-size:.76rem;color:var(--mu)}
-.mv{display:flex;flex-direction:column;gap:1px}
-.mv strong{color:var(--txt);font-size:.83rem;font-weight:700}
 
 /* PLAN */
 .pw-toggle{display:flex;gap:8px;margin-bottom:16px}
@@ -285,32 +328,79 @@ footer a:hover{color:var(--txt)}
 
 <!-- BOWLS -->
 <div id="page-bowls" class="page">
-<div class="pw">
-  <div style="margin-bottom:6px"><h2 style="font-size:1.25rem;font-weight:700">Bowl Recipes</h2><p style="font-size:.8rem;color:var(--mu);margin-top:2px">High protein, fresh veggies, bright dressings — no shrimp, no tuna.</p></div>
-  <div class="bstats">
-    <div class="bstat"><div class="bstat-n">18</div><div class="bstat-l">Bowl recipes</div></div>
-    <div class="bstat"><div class="bstat-n">14</div><div class="bstat-l">Days planned</div></div>
-    <div class="bstat"><div class="bstat-n">~500</div><div class="bstat-l">kcal per bowl</div></div>
-    <div class="bstat"><div class="bstat-n">30g+</div><div class="bstat-l">Protein per meal</div></div>
+<div class="bowls-layout">
+  <!-- Sidebar -->
+  <div class="bowls-sidebar">
+    <div class="bs-header">
+      <h3>Bowl Recipes</h3>
+      <p>12 bowls · click to explore</p>
+    </div>
+    <div class="bs-section-label">🍚 Rice Bowls</div>
+    <div class="bs-item active" onclick="showBowl(0,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#c8e6c9,#66bb6a)">🍗🌽</div>
+      <div class="bs-info"><div class="bs-name">Chicken &amp; Corn Rice Bowl</div><div class="bs-kcal">490 kcal · 38g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showBowl(1,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#fff9c4,#f9a825)">🥚🥒</div>
+      <div class="bs-info"><div class="bs-name">Egg &amp; Veggie Rice Bowl</div><div class="bs-kcal">420 kcal · 22g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showBowl(2,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#ffe0b2,#ff9800)">🫘🍅</div>
+      <div class="bs-info"><div class="bs-name">Chickpea &amp; Tomato Rice</div><div class="bs-kcal">450 kcal · 18g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showBowl(3,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#e8f5e9,#43a047)">🥗🍗</div>
+      <div class="bs-info"><div class="bs-name">Mediterranean Chicken Rice</div><div class="bs-kcal">510 kcal · 42g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showBowl(4,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#fce4ec,#e91e63)">🌮🍗</div>
+      <div class="bs-info"><div class="bs-name">Mexican Chicken Rice Bowl</div><div class="bs-kcal">530 kcal · 40g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showBowl(5,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#fff9c4,#fdd835)">🍍🍗</div>
+      <div class="bs-info"><div class="bs-name">Tropical Chicken Rice</div><div class="bs-kcal">480 kcal · 36g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-section-label">🥔 Potato Bowls</div>
+    <div class="bs-item" onclick="showBowl(6,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#ffe0b2,#ef6c00)">🥔🍗</div>
+      <div class="bs-info"><div class="bs-name">Chicken &amp; Roasted Potato Power</div><div class="bs-kcal">560 kcal · 44g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showBowl(7,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#fff9c4,#f9a825)">🥚🥔</div>
+      <div class="bs-info"><div class="bs-name">Egg &amp; Potato Salad Bowl</div><div class="bs-kcal">440 kcal · 24g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showBowl(8,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#f3e5f5,#ab47bc)">🫘🥔</div>
+      <div class="bs-info"><div class="bs-name">Chickpea &amp; Sweet Potato Bowl</div><div class="bs-kcal">470 kcal · 16g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showBowl(9,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#dcedc8,#689f38)">🥑🥔</div>
+      <div class="bs-info"><div class="bs-name">Avocado Potato &amp; Egg Bowl</div><div class="bs-kcal">520 kcal · 20g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showBowl(10,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#e8f5e9,#2e7d32)">🌿🥔</div>
+      <div class="bs-info"><div class="bs-name">Herb Chicken Potato Bowl</div><div class="bs-kcal">490 kcal · 40g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showBowl(11,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#f5f5dc,#8d6e63)">🫚🥔</div>
+      <div class="bs-info"><div class="bs-name">Tahini Potato &amp; Veggie Bowl</div><div class="bs-kcal">460 kcal · 14g protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
   </div>
-  <div class="sec-title" style="margin-top:8px">Rice Bowls <span class="pill">YOUR FAVOURITES</span></div>
-  <div class="bowls-grid">
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#c8e6c9,#66bb6a)">🍗🌽</div><div class="bcard-b"><div class="bcard-name">Chicken &amp; Corn Rice Bowl</div><div class="bcard-tags"><span class="tag">High Protein</span><span class="tag">Easy</span></div><div class="bmacros"><div class="mv"><strong>490</strong><span>kcal</span></div><div class="mv"><strong>38g</strong><span>protein</span></div><div class="mv"><strong>52g</strong><span>carbs</span></div></div></div></div>
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#fff9c4,#f9a825)">🥚🥒</div><div class="bcard-b"><div class="bcard-name">Egg &amp; Veggie Rice Bowl</div><div class="bcard-tags"><span class="tag">Vegetarian</span><span class="tag">Quick</span></div><div class="bmacros"><div class="mv"><strong>420</strong><span>kcal</span></div><div class="mv"><strong>22g</strong><span>protein</span></div><div class="mv"><strong>54g</strong><span>carbs</span></div></div></div></div>
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#ffe0b2,#ff9800)">🫘🍅</div><div class="bcard-b"><div class="bcard-name">Chickpea &amp; Tomato Rice</div><div class="bcard-tags"><span class="tag">Vegan</span><span class="tag ora">Filling</span></div><div class="bmacros"><div class="mv"><strong>450</strong><span>kcal</span></div><div class="mv"><strong>18g</strong><span>protein</span></div><div class="mv"><strong>65g</strong><span>carbs</span></div></div></div></div>
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#e8f5e9,#43a047)">🥗🍗</div><div class="bcard-b"><div class="bcard-name">Mediterranean Chicken Rice</div><div class="bcard-tags"><span class="tag">High Protein</span><span class="tag ora">Bold Flavour</span></div><div class="bmacros"><div class="mv"><strong>510</strong><span>kcal</span></div><div class="mv"><strong>42g</strong><span>protein</span></div><div class="mv"><strong>48g</strong><span>carbs</span></div></div></div></div>
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#fce4ec,#e91e63)">🌮🍗</div><div class="bcard-b"><div class="bcard-name">Mexican Chicken Rice Bowl</div><div class="bcard-tags"><span class="tag ora">Spicy</span><span class="tag">High Protein</span></div><div class="bmacros"><div class="mv"><strong>530</strong><span>kcal</span></div><div class="mv"><strong>40g</strong><span>protein</span></div><div class="mv"><strong>55g</strong><span>carbs</span></div></div></div></div>
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#fff9c4,#fdd835)">🍍🍗</div><div class="bcard-b"><div class="bcard-name">Tropical Chicken Rice</div><div class="bcard-tags"><span class="tag">Sweet</span><span class="tag">Fresh</span></div><div class="bmacros"><div class="mv"><strong>480</strong><span>kcal</span></div><div class="mv"><strong>36g</strong><span>protein</span></div><div class="mv"><strong>60g</strong><span>carbs</span></div></div></div></div>
-  </div>
-  <div class="sec-title">Potato Bowls <span class="pill">YOU'LL LOVE THESE</span></div>
-  <div class="bowls-grid">
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#ffe0b2,#ef6c00)">🥔🍗</div><div class="bcard-b"><div class="bcard-name">Chicken &amp; Roasted Potato Power</div><div class="bcard-tags"><span class="tag">High Protein</span><span class="tag ora">Hearty</span></div><div class="bmacros"><div class="mv"><strong>560</strong><span>kcal</span></div><div class="mv"><strong>44g</strong><span>protein</span></div><div class="mv"><strong>58g</strong><span>carbs</span></div></div></div></div>
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#fff9c4,#f9a825)">🥚🥔</div><div class="bcard-b"><div class="bcard-name">Egg &amp; Potato Salad Bowl</div><div class="bcard-tags"><span class="tag">Vegetarian</span><span class="tag">Easy</span></div><div class="bmacros"><div class="mv"><strong>440</strong><span>kcal</span></div><div class="mv"><strong>24g</strong><span>protein</span></div><div class="mv"><strong>50g</strong><span>carbs</span></div></div></div></div>
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#f3e5f5,#ab47bc)">🫘🥔</div><div class="bcard-b"><div class="bcard-name">Chickpea &amp; Sweet Potato Bowl</div><div class="bcard-tags"><span class="tag">Vegan</span><span class="tag">Fibre-Rich</span></div><div class="bmacros"><div class="mv"><strong>470</strong><span>kcal</span></div><div class="mv"><strong>16g</strong><span>protein</span></div><div class="mv"><strong>72g</strong><span>carbs</span></div></div></div></div>
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#dcedc8,#689f38)">🥑🥔</div><div class="bcard-b"><div class="bcard-name">Avocado Potato &amp; Egg Bowl</div><div class="bcard-tags"><span class="tag">Healthy Fats</span><span class="tag">Fresh</span></div><div class="bmacros"><div class="mv"><strong>520</strong><span>kcal</span></div><div class="mv"><strong>20g</strong><span>protein</span></div><div class="mv"><strong>48g</strong><span>carbs</span></div></div></div></div>
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#e8f5e9,#2e7d32)">🌿🥔</div><div class="bcard-b"><div class="bcard-name">Herb Chicken Potato Bowl</div><div class="bcard-tags"><span class="tag">High Protein</span><span class="tag ora">Lemon-Herb</span></div><div class="bmacros"><div class="mv"><strong>490</strong><span>kcal</span></div><div class="mv"><strong>40g</strong><span>protein</span></div><div class="mv"><strong>46g</strong><span>carbs</span></div></div></div></div>
-    <div class="bcard"><div class="bcard-img" style="background:linear-gradient(135deg,#f5f5dc,#8d6e63)">🫚🥔</div><div class="bcard-b"><div class="bcard-name">Tahini Potato &amp; Veggie Bowl</div><div class="bcard-tags"><span class="tag">Vegan</span><span class="tag ora">Creamy</span></div><div class="bmacros"><div class="mv"><strong>460</strong><span>kcal</span></div><div class="mv"><strong>14g</strong><span>protein</span></div><div class="mv"><strong>56g</strong><span>carbs</span></div></div></div></div>
-  </div>
+
+  <!-- Detail panel -->
+  <div id="bowl-detail" class="bowl-detail"></div>
 </div>
 </div>
 
@@ -531,6 +621,43 @@ function go(name,btn){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 lr(0,null);
+
+const BD=[
+  {em:'🍗🌽',title:'Chicken & Corn Rice Bowl',tags:['High Protein'],bg:'linear-gradient(135deg,#c8e6c9,#66bb6a)',kcal:490,protein:'38g',prep:'10 min',cook:'20 min',desc:'Juicy grilled chicken breast over white rice with sweet corn, cherry tomatoes and a zingy lemon dressing.',ing:['150g chicken breast, grilled','1 cup cooked white rice','½ cup corn kernels','Cherry tomatoes, halved','Cucumber, sliced','Juice of ½ lemon','1 tbsp olive oil, salt & pepper'],steps:[{t:'Cook the Rice',d:'Rinse rice and cook 2:1 water ratio. Fluff with a fork and spread to cool.'},{t:'Grill the Chicken',d:'Season with salt, pepper, olive oil. Grill or pan-fry 6–7 min per side until cooked through. Slice.'},{t:'Assemble',d:'Layer rice in a container. Arrange chicken, corn, tomatoes and cucumber.'},{t:'Dress & Pack',d:'Drizzle lemon juice and olive oil just before eating. Tastes great cold.'}],nut:[{n:'Protein',v:'38g',p:76,b:'#2d6a35'},{n:'Carbs',v:'52g',p:65,b:'#e07b39'},{n:'Fats',v:'10g',p:30,b:'#9c27b0'}]},
+  {em:'🥚🥒',title:'Egg & Veggie Rice Bowl',tags:['Vegetarian'],bg:'linear-gradient(135deg,#fff9c4,#f9a825)',kcal:420,protein:'22g',prep:'10 min',cook:'10 min',desc:'Soft boiled eggs, crisp cucumber and fresh cherry tomatoes over fluffy rice with a light sesame-soy drizzle.',ing:['2 eggs, soft-boiled','1 cup cooked rice','½ cup corn kernels','Cherry tomatoes, halved','Cucumber, sliced','1 tsp soy sauce','½ tsp sesame oil'],steps:[{t:'Boil the Eggs',d:'Boil eggs for 6–7 min for a jammy yolk. Cool in cold water and peel.'},{t:'Prep Veg',d:'Halve tomatoes, slice cucumber. Keep everything cold until packing.'},{t:'Assemble',d:'Spoon rice into container, arrange eggs (halved), veg on top.'},{t:'Dress',d:'Drizzle soy sauce and sesame oil right before eating.'}],nut:[{n:'Protein',v:'22g',p:44,b:'#2d6a35'},{n:'Carbs',v:'54g',p:67,b:'#e07b39'},{n:'Fats',v:'9g',p:28,b:'#9c27b0'}]},
+  {em:'🫘🍅',title:'Chickpea & Tomato Rice',tags:['Vegan'],bg:'linear-gradient(135deg,#ffe0b2,#ff9800)',kcal:450,protein:'18g',prep:'5 min',cook:'15 min',desc:'Protein-packed chickpeas and juicy tomatoes with cumin-spiced rice and red onion for a hearty plant-based lunch.',ing:['1 can chickpeas, drained','1 cup cooked rice','Cherry tomatoes, halved','½ red onion, sliced','1 tsp cumin powder','Juice of ½ lemon','1 tbsp olive oil, salt & pepper'],steps:[{t:'Warm Chickpeas',d:'Heat chickpeas in a pan with olive oil, cumin and a pinch of salt for 3–4 min.'},{t:'Prep Veg',d:'Halve tomatoes and thinly slice red onion.'},{t:'Assemble',d:'Layer rice, then chickpeas, tomatoes, red onion.'},{t:'Dress',d:'Squeeze lemon juice generously over everything.'}],nut:[{n:'Protein',v:'18g',p:36,b:'#2d6a35'},{n:'Carbs',v:'68g',p:85,b:'#e07b39'},{n:'Fats',v:'8g',p:25,b:'#9c27b0'}]},
+  {em:'🥗🍗',title:'Mediterranean Chicken Rice',tags:['High Protein','Bold Flavour'],bg:'linear-gradient(135deg,#e8f5e9,#43a047)',kcal:510,protein:'42g',prep:'10 min',cook:'20 min',desc:'Herb-marinated chicken with fluffy rice, kalamata olives, cucumber, tomatoes and crumbled feta.',ing:['150g chicken breast','1 cup cooked rice','Cucumber, diced','Cherry tomatoes, halved','8 kalamata olives','30g feta cheese, crumbled','Olive oil & dried oregano'],steps:[{t:'Marinate Chicken',d:'Mix olive oil, lemon, garlic and oregano. Coat chicken, rest 10 min.'},{t:'Cook Chicken',d:'Pan-fry 6–7 min per side until golden. Rest then slice.'},{t:'Assemble',d:'Layer rice, top with chicken, cucumber, tomatoes, olives and feta.'},{t:'Serve',d:'A drizzle of olive oil finishes it perfectly.'}],nut:[{n:'Protein',v:'42g',p:84,b:'#2d6a35'},{n:'Carbs',v:'48g',p:60,b:'#e07b39'},{n:'Fats',v:'14g',p:43,b:'#9c27b0'}]},
+  {em:'🌮🍗',title:'Mexican Chicken Rice Bowl',tags:['High Protein'],bg:'linear-gradient(135deg,#fce4ec,#e91e63)',kcal:530,protein:'40g',prep:'10 min',cook:'20 min',desc:'Chili-spiced chicken over rice with black beans, corn, lime and a smoky paprika kick.',ing:['150g chicken breast, spiced','1 cup cooked rice','½ cup black beans, drained','½ cup corn kernels','Juice of 1 lime','1 tsp smoked paprika','1 tsp chili powder, olive oil'],steps:[{t:'Season & Cook Chicken',d:'Coat chicken in smoked paprika, chili powder, salt. Pan-fry until cooked through.'},{t:'Warm Beans',d:'Heat black beans with a pinch of cumin and salt.'},{t:'Assemble',d:'Layer rice, beans, corn, and sliced chicken.'},{t:'Finish',d:'Squeeze lime juice over everything before eating.'}],nut:[{n:'Protein',v:'40g',p:80,b:'#2d6a35'},{n:'Carbs',v:'60g',p:75,b:'#e07b39'},{n:'Fats',v:'11g',p:34,b:'#9c27b0'}]},
+  {em:'🍍🍗',title:'Tropical Chicken Rice',tags:['Sweet & Savoury'],bg:'linear-gradient(135deg,#fff9c4,#fdd835)',kcal:480,protein:'36g',prep:'10 min',cook:'20 min',desc:'Grilled chicken with pineapple chunks, corn and rice in a sweet chili glaze — a fresh, uplifting bowl.',ing:['150g chicken breast','1 cup cooked rice','½ cup pineapple chunks','½ cup corn kernels','2 tbsp sweet chili sauce','1 tbsp soy sauce','Spring onion to garnish'],steps:[{t:'Cook Chicken',d:'Grill or pan-fry chicken. Brush with sweet chili sauce in the last 2 min.'},{t:'Combine Sauce',d:'Mix remaining sweet chili sauce with soy sauce.'},{t:'Assemble',d:'Layer rice, add chicken, pineapple and corn.'},{t:'Finish',d:'Drizzle sauce and garnish with sliced spring onion.'}],nut:[{n:'Protein',v:'36g',p:72,b:'#2d6a35'},{n:'Carbs',v:'58g',p:72,b:'#e07b39'},{n:'Fats',v:'8g',p:25,b:'#9c27b0'}]},
+  {em:'🥔🍗',title:'Chicken & Roasted Potato Power',tags:['High Protein'],bg:'linear-gradient(135deg,#ffe0b2,#ef6c00)',kcal:560,protein:'44g',prep:'10 min',cook:'30 min',desc:'Crispy roasted potatoes, juicy chicken breast, red onion and a creamy yogurt dressing — the most filling bowl in the lineup.',ing:['150g chicken breast','250g potatoes, cubed & roasted','½ red onion, roasted','2 tbsp Greek yogurt','Juice of ½ lemon','1 tsp garlic powder','Olive oil, salt & paprika'],steps:[{t:'Roast Potatoes & Onion',d:'Toss with olive oil, paprika, salt. Roast at 200°C for 25–30 min.'},{t:'Cook Chicken',d:'Season with garlic powder, salt, olive oil. Pan-fry 12 min total.'},{t:'Make Dressing',d:'Mix yogurt, lemon juice, pinch of salt.'},{t:'Assemble',d:'Plate potatoes and onion, top with sliced chicken, drizzle yogurt dressing.'}],nut:[{n:'Protein',v:'44g',p:88,b:'#2d6a35'},{n:'Carbs',v:'54g',p:67,b:'#e07b39'},{n:'Fats',v:'14g',p:43,b:'#9c27b0'}]},
+  {em:'🥚🥔',title:'Egg & Potato Salad Bowl',tags:['Vegetarian'],bg:'linear-gradient(135deg,#fff9c4,#f9a825)',kcal:440,protein:'24g',prep:'10 min',cook:'25 min',desc:'Creamy boiled eggs and golden roasted potatoes with crisp cucumber, mustard dressing and fresh herbs.',ing:['2 eggs, hard-boiled','250g potatoes, roasted','Cucumber, sliced','Red onion, thinly sliced','1 tsp Dijon mustard','1 tbsp olive oil','Juice of ½ lemon, fresh parsley'],steps:[{t:'Roast the Potatoes',d:'Cube potatoes, toss with olive oil, salt and paprika. Roast at 200°C for 25 min.'},{t:'Boil the Eggs',d:'Boil eggs 8 min. Cool in cold water, peel and halve.'},{t:'Make Dressing',d:'Whisk mustard, olive oil, lemon juice, salt and pepper.'},{t:'Assemble',d:'Arrange potatoes, eggs, cucumber and red onion. Drizzle dressing and garnish with parsley.'}],nut:[{n:'Protein',v:'24g',p:48,b:'#2d6a35'},{n:'Carbs',v:'50g',p:62,b:'#e07b39'},{n:'Fats',v:'16g',p:50,b:'#9c27b0'}]},
+  {em:'🫘🥔',title:'Chickpea & Sweet Potato Bowl',tags:['Vegan','Fibre-Rich'],bg:'linear-gradient(135deg,#f3e5f5,#ab47bc)',kcal:470,protein:'16g',prep:'10 min',cook:'30 min',desc:'Spiced roasted chickpeas and sweet potato cubes over spinach with a bright cumin-lemon dressing.',ing:['1 can chickpeas, drained','1 medium sweet potato, cubed','Baby spinach (large handful)','1 tsp cumin','1 tsp paprika','Juice of 1 lemon','1 tbsp olive oil, salt & pepper'],steps:[{t:'Roast Chickpeas & Sweet Potato',d:'Toss with olive oil, cumin, paprika, salt. Roast at 200°C for 25–30 min.'},{t:'Make Dressing',d:'Whisk lemon juice, olive oil, pinch of cumin, salt.'},{t:'Wilt Spinach (optional)',d:'1 min in a warm pan, or leave raw for crunch.'},{t:'Assemble',d:'Plate spinach, top with roasted chickpeas and sweet potato, drizzle dressing.'}],nut:[{n:'Protein',v:'16g',p:32,b:'#2d6a35'},{n:'Carbs',v:'72g',p:90,b:'#e07b39'},{n:'Fats',v:'11g',p:34,b:'#9c27b0'}]},
+  {em:'🥑🥔',title:'Avocado Potato & Egg Bowl',tags:['Vegetarian'],bg:'linear-gradient(135deg,#dcedc8,#689f38)',kcal:520,protein:'20g',prep:'10 min',cook:'25 min',desc:'Creamy avocado with roasted potatoes and boiled eggs — rich, satisfying and packed with healthy fats.',ing:['½ avocado, sliced','250g potatoes, roasted','2 eggs, boiled','Cherry tomatoes, halved','Juice of ½ lemon','Olive oil, salt, chili flakes','Fresh coriander (optional)'],steps:[{t:'Roast Potatoes',d:'Toss cubed potatoes with olive oil, salt, paprika. Roast 200°C for 25 min.'},{t:'Boil Eggs',d:'Boil 8 min, cool in cold water, peel and halve.'},{t:'Prepare Avocado',d:'Slice avocado, squeeze lemon juice to prevent browning.'},{t:'Assemble',d:'Arrange potatoes, eggs, avocado and tomatoes. Drizzle olive oil, finish with chili flakes.'}],nut:[{n:'Protein',v:'20g',p:40,b:'#2d6a35'},{n:'Carbs',v:'46g',p:57,b:'#e07b39'},{n:'Fats',v:'24g',p:75,b:'#9c27b0'}]},
+  {em:'🌿🥔',title:'Herb Chicken Potato Bowl',tags:['High Protein'],bg:'linear-gradient(135deg,#e8f5e9,#2e7d32)',kcal:490,protein:'40g',prep:'10 min',cook:'30 min',desc:'Lemon and herb marinated chicken with crispy roasted potatoes, mixed greens and a light yogurt dressing.',ing:['150g chicken breast','250g potatoes, roasted','Mixed greens (handful)','Juice of 1 lemon','1 tbsp olive oil','Fresh rosemary & thyme','2 tbsp Greek yogurt, salt & pepper'],steps:[{t:'Roast Potatoes',d:'Toss with olive oil, rosemary, thyme and salt. Roast at 200°C for 25–30 min.'},{t:'Cook Chicken',d:'Season with lemon zest, herbs, salt and pepper. Pan-fry ~12 min total.'},{t:'Make Yogurt Dressing',d:'Mix yogurt with lemon juice, crushed garlic, salt and olive oil.'},{t:'Assemble',d:'Plate greens, top with potatoes and sliced chicken. Spoon yogurt dressing over.'}],nut:[{n:'Protein',v:'40g',p:80,b:'#2d6a35'},{n:'Carbs',v:'46g',p:57,b:'#e07b39'},{n:'Fats',v:'13g',p:40,b:'#9c27b0'}]},
+  {em:'🫚🥔',title:'Tahini Potato & Veggie Bowl',tags:['Vegan'],bg:'linear-gradient(135deg,#f5f5dc,#8d6e63)',kcal:460,protein:'14g',prep:'10 min',cook:'30 min',desc:'Roasted potatoes and chickpeas drizzled with garlicky tahini over a bed of tomatoes and greens.',ing:['250g potatoes, roasted','½ can chickpeas, roasted','Mixed greens','Cherry tomatoes, halved','2 tbsp tahini','Juice of 1 lemon','1 clove garlic, crushed, water to thin'],steps:[{t:'Roast Potatoes & Chickpeas',d:'Toss separately with olive oil, salt, cumin. Roast at 200°C for 25–30 min.'},{t:'Make Tahini Dressing',d:'Whisk tahini, lemon juice, garlic, salt and water until pourable.'},{t:'Arrange Greens',d:'Lay greens and halved tomatoes as the base.'},{t:'Assemble',d:'Top with potatoes and chickpeas. Drizzle tahini dressing generously.'}],nut:[{n:'Protein',v:'14g',p:28,b:'#2d6a35'},{n:'Carbs',v:'60g',p:75,b:'#e07b39'},{n:'Fats',v:'16g',p:50,b:'#9c27b0'}]}
+];
+
+function showBowl(idx,el){
+  if(el){document.querySelectorAll('.bs-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
+  const b=BD[idx];
+  const panel=document.getElementById('bowl-detail');
+  const tagsHtml=b.tags.map(t=>'<span class="tag">'+t+'</span>').join('');
+  const ingHtml=b.ing.map(x=>'<div class="bd-ii" onclick="tbi(this)"><div class="bd-ick"></div><span>'+x+'</span></div>').join('');
+  const stepsHtml=b.steps.map((s,i)=>'<div class="bd-step"><div class="bd-snum">'+(i+1)+'</div><div><div class="bd-stitle">'+s.t+'</div><div class="bd-stext">'+s.d+'</div></div></div>').join('');
+  const nutHtml=b.nut.map(n=>'<div><div class="bd-nr-h"><span class="bd-nr-name">'+n.n+'</span><span class="bd-nr-val">'+n.v+'</span></div><div class="bd-nbar"><div class="bd-nbar-f" style="background:'+n.b+';width:'+n.p+'%"></div></div></div>').join('');
+  panel.innerHTML='<div class="bd-hero" style="background:'+b.bg+'"><span style="font-size:5rem">'+b.em+'</span><div class="bd-hero-tags">'+tagsHtml+'</div></div>'
+    +'<div class="bd-title">'+b.title+'</div>'
+    +'<div class="bd-desc">'+b.desc+'</div>'
+    +'<div class="bd-stats"><div class="bd-stat"><div class="bd-stat-i">⏱</div><div class="bd-stat-l">Prep</div><div class="bd-stat-v">'+b.prep+'</div></div>'
+    +'<div class="bd-stat"><div class="bd-stat-i">🍽</div><div class="bd-stat-l">Cook</div><div class="bd-stat-v">'+b.cook+'</div></div>'
+    +'<div class="bd-stat"><div class="bd-stat-i">⚡</div><div class="bd-stat-l">Calories</div><div class="bd-stat-v">'+b.kcal+' kcal</div></div>'
+    +'<div class="bd-stat"><div class="bd-stat-i">💪</div><div class="bd-stat-l">Protein</div><div class="bd-stat-v">'+b.protein+'</div></div></div>'
+    +'<div class="bd-grid"><div class="bd-card"><h3>🛒 Ingredients</h3><div class="bd-ing-list">'+ingHtml+'</div></div>'
+    +'<div class="bd-card"><h3>📋 Instructions</h3><div class="bd-steps">'+stepsHtml+'</div></div></div>'
+    +'<div class="bd-nut"><h3>📊 Nutrition</h3><div class="bd-nut-rows">'+nutHtml+'</div></div>';
+}
+function tbi(el){el.classList.toggle('ck');el.querySelector('.bd-ick').textContent=el.classList.contains('ck')?'✓':'';}
+showBowl(0,null);
 </script>
 </body>
 </html>
