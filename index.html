@@ -218,67 +218,39 @@ footer a:hover{color:var(--txt)}
 <div id="page-dashboard" class="page active">
 <div class="pw">
   <div class="wk-hdr">
-    <div><h2>Weekly Preview</h2><p>October 14 – October 20, 2024</p></div>
-    <button class="cal-btn">Full Calendar <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>
+    <div><h2>Weekly Preview</h2><p id="wk-range"></p></div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <span id="live-clock" style="font-size:.8rem;font-weight:600;color:var(--gm)"></span>
+      <button class="cal-btn">Full Calendar <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>
+    </div>
   </div>
-  <div class="week-strip">
-    <div class="dc" onclick="selDay(this)"><div class="dn">Mon</div><div class="dd">14</div></div>
-    <div class="dc active" onclick="selDay(this)"><div class="dn">Tue</div><div class="dd">15</div></div>
-    <div class="dc" onclick="selDay(this)"><div class="dn">Wed</div><div class="dd">16</div></div>
-    <div class="dc" onclick="selDay(this)"><div class="dn">Thu</div><div class="dd">17</div></div>
-    <div class="dc" onclick="selDay(this)"><div class="dn">Fri</div><div class="dd">18</div></div>
-    <div class="dc" onclick="selDay(this)"><div class="dn">Sat</div><div class="dd">19</div></div>
-    <div class="dc" onclick="selDay(this)"><div class="dn">Sun</div><div class="dd">20</div></div>
-  </div>
+  <div class="week-strip" id="week-strip"></div>
   <div class="db">
     <div>
       <div class="prog-card">
         <h3>Daily Progress</h3>
         <div class="donut-w">
           <svg viewBox="0 0 120 120"><circle class="dt" cx="60" cy="60" r="52"/><circle class="df" cx="60" cy="60" r="52"/></svg>
-          <div class="dc2"><div class="dk">1,640</div><div class="dl">KCAL LEFT</div></div>
+          <div class="dc2"><div class="dk" id="kcal-left">840</div><div class="dl">KCAL / DAY</div></div>
         </div>
         <div class="macros">
-          <div class="mr"><div class="mr-h"><span>Protein</span><span>84g / 120g</span></div><div class="mbar"><div class="mbar-f bp"></div></div></div>
-          <div class="mr"><div class="mr-h"><span>Carbs</span><span>142g / 210g</span></div><div class="mbar"><div class="mbar-f bc"></div></div></div>
-          <div class="mr"><div class="mr-h"><span>Fats</span><span>42g / 65g</span></div><div class="mbar"><div class="mbar-f bf"></div></div></div>
+          <div class="mr"><div class="mr-h"><span>Protein</span><span id="prot-lbl">~35g</span></div><div class="mbar"><div class="mbar-f bp"></div></div></div>
+          <div class="mr"><div class="mr-h"><span>Carbs</span><span id="carb-lbl">~90g</span></div><div class="mbar"><div class="mbar-f bc"></div></div></div>
+          <div class="mr"><div class="mr-h"><span>Fats</span><span id="fat-lbl">~25g</span></div><div class="mbar"><div class="mbar-f bf"></div></div></div>
         </div>
-        <button class="btn-dark"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Log Water</button>
+        <button class="btn-dark" id="water-btn" onclick="logWater()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6 10 4 14 4 17a8 8 0 0016 0c0-3-2-7-8-15z"/></svg>
+          Log Water &nbsp;<span id="water-count" style="background:rgba(255,255,255,.25);border-radius:10px;padding:1px 7px;font-size:.78rem">0 / 8</span>
+        </button>
       </div>
       <div class="protip">
         <div style="font-size:1.1rem;margin-top:1px">💡</div>
-        <div class="protip-t"><h4>Pro Tip</h4><p>Increasing your protein intake today could help with muscle recovery after your workout.</p></div>
+        <div class="protip-t"><h4>Pro Tip</h4><p>Prepare your bowl the night before — it tastes great cold and saves you time in the morning.</p></div>
       </div>
     </div>
     <div>
-      <div class="meals-hdr"><h2>Today's Meals</h2><div class="date-b">Tuesday, Oct 15</div></div>
-      <div class="mc">
-        <div class="mc-img" style="background:linear-gradient(135deg,#a8d8a8,#4caf50)"><div class="emoji-box">🥑🍳</div><span class="mtype">Breakfast</span></div>
-        <div class="mc-info">
-          <div class="mc-row"><div class="mc-name">Smashed Avocado &amp; Poached Egg</div><button class="more">···</button></div>
-          <div class="mc-meta"><span>⏱ 15 mins</span><span>🔥 340 kcal</span></div>
-          <div class="mc-tags"><span class="tag">VEGETARIAN</span><span class="tag">HIGH FIBER</span></div>
-        </div>
-        <div class="mc-act"><button class="ma done"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></button></div>
-      </div>
-      <div class="mc">
-        <div class="mc-img" style="background:linear-gradient(135deg,#c8e6c9,#388e3c)"><div class="emoji-box">🥗🫒</div><span class="mtype">Lunch</span></div>
-        <div class="mc-info">
-          <div class="mc-row"><div class="mc-name">Mediterranean Quinoa Bowl</div><button class="more">···</button></div>
-          <div class="mc-meta"><span>⏱ 20 mins</span><span>🔥 480 kcal</span></div>
-          <div class="mc-tags"><span class="tag">VEGAN OPTION</span><span class="tag">LOW GI</span></div>
-        </div>
-        <div class="mc-act"><button class="ma pend">🍽</button></div>
-      </div>
-      <div class="mc">
-        <div class="mc-img" style="background:linear-gradient(135deg,#ffccbc,#ff7043)"><div class="emoji-box">🐟🍋</div><span class="mtype">Dinner</span></div>
-        <div class="mc-info">
-          <div class="mc-row"><div class="mc-name">Lemon Herb Grilled Salmon</div><button class="more">···</button></div>
-          <div class="mc-meta"><span>⏱ 25 mins</span><span>🔥 520 kcal</span></div>
-          <div class="mc-tags"><span class="tag">HIGH PROTEIN</span><span class="tag">KETO</span></div>
-        </div>
-        <div class="mc-act"><button class="ma pend">🍽</button></div>
-      </div>
+      <div class="meals-hdr"><h2>Meals</h2><div class="date-b" id="meals-date-b"></div></div>
+      <div id="meals-list"></div>
     </div>
   </div>
 </div>
@@ -500,7 +472,148 @@ footer a:hover{color:var(--txt)}
 <script>
 function ti(el){el.classList.toggle('ck');el.querySelector('.ick').textContent=el.classList.contains('ck')?'✓':'';}
 function ts(el){el.classList.toggle('ck');el.querySelector('.sck').textContent=el.classList.contains('ck')?'✓':'';}
-function selDay(el){document.querySelectorAll('.dc').forEach(c=>c.classList.remove('active'));el.classList.add('active');}
+// ── PRISTINA CLOCK ──────────────────────────────────────────────────────────
+function tickClock(){
+  const now=new Date();
+  const s=now.toLocaleTimeString('en-GB',{timeZone:'Europe/Belgrade',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const el=document.getElementById('live-clock');
+  if(el)el.textContent='🕐 '+s+' (Pristina)';
+}
+setInterval(tickClock,1000);tickClock();
+
+// ── WEEK DATA ────────────────────────────────────────────────────────────────
+// 7 days starting Mon 4 May 2026 (week containing today Sun 3 May is Sun–Sat; use Mon-Sun week starting Apr 27)
+// Actually build week around today (Mon of current week)
+function getWeekStart(){
+  const tz='Europe/Belgrade';
+  const now=new Date();
+  const loc=new Date(now.toLocaleString('en-US',{timeZone:tz}));
+  const day=loc.getDay();// 0=Sun
+  const diff=(day===0)?-6:1-day;
+  loc.setDate(loc.getDate()+diff);
+  loc.setHours(0,0,0,0);
+  return loc;
+}
+
+const DAYS_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MONTHS_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+// Meal data per weekday index 0=Mon..6=Sun (week 1 of the plan)
+const WEEK_MEALS=[
+  {morning:{name:'Greek Yogurt & Berries',em:'🥣🍓',kcal:300,time:'5 min',tags:['VEGETARIAN','HIGH PROTEIN']},
+   bowl:{name:'Mediterranean Chicken Rice Bowl',em:'🥗🍗',kcal:510,time:'10 min',tags:['HIGH PROTEIN','BOLD FLAVOUR']}},
+  {morning:{name:'Oat Porridge & Banana',em:'🌾🍌',kcal:380,time:'10 min',tags:['VEGAN','HIGH FIBER']},
+   bowl:{name:'Egg & Veggie Rice Bowl',em:'🥚🥒',kcal:420,time:'10 min',tags:['VEGETARIAN']}},
+  {morning:{name:'Scrambled Eggs on Toast',em:'🍳🍞',kcal:350,time:'10 min',tags:['VEGETARIAN','HIGH PROTEIN']},
+   bowl:{name:'Chicken & Corn Rice Bowl',em:'🍗🌽',kcal:490,time:'10 min',tags:['HIGH PROTEIN']}},
+  {morning:{name:'Smoothie — Banana & Oat',em:'🍌🥤',kcal:340,time:'5 min',tags:['VEGAN']},
+   bowl:{name:'Chickpea & Tomato Rice',em:'🫘🍅',kcal:450,time:'10 min',tags:['VEGAN']}},
+  {morning:{name:'Greek Yogurt & Granola',em:'🥣🌾',kcal:360,time:'5 min',tags:['VEGETARIAN']},
+   bowl:{name:'Tropical Chicken Rice',em:'🍍🍗',kcal:480,time:'10 min',tags:['HIGH PROTEIN']}},
+  {morning:{name:'Avocado Toast & Eggs',em:'🥑🍞',kcal:420,time:'10 min',tags:['VEGETARIAN','HIGH FIBER']},
+   bowl:{name:'Herb Chicken Potato Bowl',em:'🌿🥔',kcal:490,time:'10 min',tags:['HIGH PROTEIN']}},
+  {morning:{name:'Oat Pancakes',em:'🥞🍓',kcal:380,time:'15 min',tags:['VEGETARIAN']},
+   bowl:{name:'Chicken & Roasted Potato Power',em:'🥔🍗',kcal:560,time:'10 min',tags:['HIGH PROTEIN']}}
+];
+
+const BG_MORN=['linear-gradient(135deg,#a8d8a8,#4caf50)','linear-gradient(135deg,#c8e6c9,#388e3c)',
+               'linear-gradient(135deg,#fff9c4,#f9a825)','linear-gradient(135deg,#ffe0b2,#ff9800)',
+               'linear-gradient(135deg,#e8f5e9,#43a047)','linear-gradient(135deg,#dcedc8,#689f38)',
+               'linear-gradient(135deg,#f3e5f5,#ab47bc)'];
+const BG_BOWL=['linear-gradient(135deg,#e8f5e9,#2e7d32)','linear-gradient(135deg,#fff9c4,#f9a825)',
+               'linear-gradient(135deg,#c8e6c9,#66bb6a)','linear-gradient(135deg,#ffe0b2,#ff9800)',
+               'linear-gradient(135deg,#fff9c4,#fdd835)','linear-gradient(135deg,#dcedc8,#558b2f)',
+               'linear-gradient(135deg,#ffe0b2,#ef6c00)'];
+
+let currentDayIdx=0;// 0=Mon
+
+function buildWeekStrip(){
+  const ws=getWeekStart();
+  const strip=document.getElementById('week-strip');
+  const now=new Date();
+  const locNow=new Date(now.toLocaleString('en-US',{timeZone:'Europe/Belgrade'}));
+  const todayDate=locNow.getDate();
+  const todayMonth=locNow.getMonth();
+
+  // week range label
+  const wEnd=new Date(ws);wEnd.setDate(ws.getDate()+6);
+  document.getElementById('wk-range').textContent=
+    ws.getDate()+' '+MONTHS_SHORT[ws.getMonth()]+' – '+wEnd.getDate()+' '+MONTHS_SHORT[wEnd.getMonth()]+' '+wEnd.getFullYear();
+
+  strip.innerHTML='';
+  for(let i=0;i<7;i++){
+    const d=new Date(ws);d.setDate(ws.getDate()+i);
+    const isToday=(d.getDate()===todayDate&&d.getMonth()===todayMonth);
+    const dc=document.createElement('div');
+    dc.className='dc'+(isToday?' active':'');
+    dc.innerHTML='<div class="dn">'+DAYS_EN[(d.getDay()||7)-1>6?0:d.getDay()===0?6:d.getDay()-1+0].substring(0,3)+'</div><div class="dd">'+d.getDate()+'</div>';
+    // fix: getDay 1=Mon..0=Sun → index 0..6
+    const dayName=DAYS_EN[d.getDay()].substring(0,3);
+    dc.innerHTML='<div class="dn">'+dayName+'</div><div class="dd">'+d.getDate()+'</div>';
+    const idx=i;
+    dc.onclick=function(){selDay(this,idx);};
+    if(isToday)currentDayIdx=i;
+    strip.appendChild(dc);
+  }
+  renderMeals(currentDayIdx);
+}
+
+function selDay(el,idx){
+  document.querySelectorAll('.dc').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  currentDayIdx=idx;
+  renderMeals(idx);
+}
+
+function renderMeals(idx){
+  const ws=getWeekStart();
+  const d=new Date(ws);d.setDate(ws.getDate()+idx);
+  const dayNames=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const m=WEEK_MEALS[idx];
+  const total=m.morning.kcal+m.bowl.kcal;
+
+  document.getElementById('meals-date-b').textContent=
+    dayNames[idx]+', '+d.getDate()+' '+MONTHS_SHORT[d.getMonth()];
+  document.getElementById('kcal-left').textContent=total;
+
+  const list=document.getElementById('meals-list');
+  list.innerHTML=
+    mcCard(m.morning,'Morning','🌅',BG_MORN[idx])+
+    mcCard(m.bowl,'Work Bowl (3–4 pm)','🥣',BG_BOWL[idx]);
+}
+
+function mcCard(meal,label,icon,bg){
+  const tagsHtml=meal.tags.map(t=>'<span class="tag">'+t+'</span>').join('');
+  return '<div class="mc">'
+    +'<div class="mc-img" style="background:'+bg+'"><div class="emoji-box">'+meal.em+'</div><span class="mtype">'+label+'</span></div>'
+    +'<div class="mc-info">'
+    +'<div class="mc-row"><div class="mc-name">'+meal.name+'</div></div>'
+    +'<div class="mc-meta"><span>⏱ '+meal.time+'</span><span>🔥 '+meal.kcal+' kcal</span></div>'
+    +'<div class="mc-tags">'+tagsHtml+'</div>'
+    +'</div>'
+    +'<div class="mc-act"><button class="ma pend" onclick="toggleDone(this)">🍽</button></div>'
+    +'</div>';
+}
+
+function toggleDone(btn){
+  const done=btn.classList.contains('done');
+  btn.classList.toggle('done',!done);
+  btn.classList.toggle('pend',done);
+  if(!done)btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+  else btn.textContent='🍽';
+}
+
+// ── WATER LOG ────────────────────────────────────────────────────────────────
+let waterGlasses=0;
+function logWater(){
+  if(waterGlasses<8)waterGlasses++;
+  document.getElementById('water-count').textContent=waterGlasses+' / 8';
+  const btn=document.getElementById('water-btn');
+  if(waterGlasses>=8){btn.style.background='var(--gmid)';btn.title='Daily goal reached!';}
+}
+
+buildWeekStrip();
 function showPW(n,btn){document.getElementById('pw1').style.display=n===1?'':'none';document.getElementById('pw2').style.display=n===2?'':'none';document.querySelectorAll('.pw-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
 function go(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
