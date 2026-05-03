@@ -534,45 +534,48 @@ footer a:hover{color:var(--txt)}
 
 <!-- RECIPES -->
 <div id="page-recipes" class="page">
-  <div class="r-hero">
-    <div class="r-hero-em" id="rhem">🥗</div>
-    <div class="r-hero-content">
-      <div class="r-htags" id="rhtags"><span class="htag v">Vegan</span><span class="htag f">High Fiber</span></div>
-      <h1 class="r-hero-title" id="rhtitle">Rainbow Veggie Bowl</h1>
-      <p class="r-hero-desc" id="rhdesc">A nutrient-dense masterpiece featuring crunchy raw vegetables and roasted roots atop a protein-rich grain base.</p>
+<div class="bowls-layout">
+  <!-- Sidebar -->
+  <div class="bowls-sidebar">
+    <div class="bs-header">
+      <h3>Recipes</h3>
+      <p>6 recipes · click to explore</p>
+    </div>
+    <div class="bs-section-label">🌿 All Recipes</div>
+    <div class="bs-item active" onclick="showRecipe(0,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#c8e6c9,#66bb6a)">🥗</div>
+      <div class="bs-info"><div class="bs-name">Rainbow Veggie Bowl</div><div class="bs-kcal">420 kcal · Vegan</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showRecipe(1,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#c8e6c9,#43a047)">🍗🌽</div>
+      <div class="bs-info"><div class="bs-name">Chicken &amp; Corn Rice Bowl</div><div class="bs-kcal">490 kcal · High Protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showRecipe(2,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#fff9c4,#f9a825)">🥚🥔</div>
+      <div class="bs-info"><div class="bs-name">Egg &amp; Potato Salad Bowl</div><div class="bs-kcal">440 kcal · Vegetarian</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showRecipe(3,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#e8f5e9,#2e7d32)">🥗🍗</div>
+      <div class="bs-info"><div class="bs-name">Mediterranean Chicken Rice</div><div class="bs-kcal">510 kcal · High Protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showRecipe(4,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#dcedc8,#558b2f)">🌿🥔</div>
+      <div class="bs-info"><div class="bs-name">Herb Chicken Potato Bowl</div><div class="bs-kcal">490 kcal · High Protein</div></div>
+      <div class="bs-arrow">›</div>
+    </div>
+    <div class="bs-item" onclick="showRecipe(5,this)">
+      <div class="bs-emoji" style="background:linear-gradient(135deg,#f3e5f5,#ab47bc)">🫘🥔</div>
+      <div class="bs-info"><div class="bs-name">Chickpea &amp; Sweet Potato</div><div class="bs-kcal">470 kcal · Vegan</div></div>
+      <div class="bs-arrow">›</div>
     </div>
   </div>
-  <div class="pw">
-    <div class="r-tabs">
-      <button class="rt active" onclick="lr(0,this)">Rainbow Veggie Bowl</button>
-      <button class="rt" onclick="lr(1,this)">Chicken &amp; Corn Rice Bowl</button>
-      <button class="rt" onclick="lr(2,this)">Egg &amp; Potato Salad Bowl</button>
-      <button class="rt" onclick="lr(3,this)">Mediterranean Chicken Rice</button>
-      <button class="rt" onclick="lr(4,this)">Herb Chicken Potato Bowl</button>
-      <button class="rt" onclick="lr(5,this)">Chickpea &amp; Sweet Potato</button>
-    </div>
-    <div class="r-stats">
-      <div class="rstat"><div class="rstat-i">⏱</div><div class="rstat-l">Prep Time</div><div class="rstat-v" id="rp">15 min</div></div>
-      <div class="rstat"><div class="rstat-i">🍽</div><div class="rstat-l">Cook Time</div><div class="rstat-v" id="rc">20 min</div></div>
-      <div class="rstat"><div class="rstat-i">⚡</div><div class="rstat-l">Calories</div><div class="rstat-v" id="rk">420 kcal</div></div>
-      <div class="rstat"><div class="rstat-i">👥</div><div class="rstat-l">Servings</div><div class="rstat-v" id="rs">2 Portions</div></div>
-    </div>
-    <div class="r-grid">
-      <div class="ing-card">
-        <h3>🛒 Ingredients</h3>
-        <div class="ing-list" id="rings"></div>
-        <button class="btn-dark">🍳 Cook Now</button>
-      </div>
-      <div class="inst-card">
-        <h3>📋 Instructions</h3>
-        <div class="step-list" id="rsteps"></div>
-      </div>
-    </div>
-    <div class="nut-card">
-      <h3>📊 Nutritional Breakdown</h3>
-      <div class="nut-rows" id="rnut"></div>
-    </div>
-  </div>
+  <!-- Detail panel -->
+  <div id="recipe-detail" class="bowl-detail"></div>
+</div>
 </div>
 
 
@@ -583,30 +586,34 @@ footer a:hover{color:var(--txt)}
 
 <script>
 const RD=[
-  {em:'🥗',title:'Rainbow Veggie Bowl',tags:[{c:'v',l:'Vegan'},{c:'f',l:'High Fiber'}],desc:'A nutrient-dense masterpiece featuring crunchy raw vegetables and roasted roots atop a protein-rich grain base.',prep:'15 min',cook:'20 min',kcal:'420 kcal',srv:'2 Portions',ing:['1 cup Quinoa, cooked','1 cup Purple Cabbage, shredded','2 Carrots, julienned','1 Red Bell Pepper, sliced','½ cup Edamame, steamed','1 Sweet Potato, cubed and roasted','Tahini Dressing (2 tbsp)'],steps:[{t:'Prepare the Grain Base',d:'Rinse quinoa under cold water. Combine 1 cup quinoa with 2 cups water. Bring to a boil, cover and simmer 15 minutes until fluffy.'},{t:'Roast the Sweet Potatoes',d:'Toss sweet potato cubes with olive oil, salt and pepper. Roast at 200°C for 20 minutes until tender and slightly caramelised.'},{t:'Chop and Steam',d:'Julienne the carrots and shred the cabbage. Steam edamame 3–5 minutes until bright green and tender.'},{t:'Assemble and Dress',d:'Divide quinoa into two bowls. Arrange vegetables in colourful sections. Drizzle generously with tahini dressing before serving.'}],nut:[{n:'Protein',v:'18g',p:60,b:'#2d6a35',note:'75% of your recommended post-workout target.'},{n:'Carbohydrates',v:'54g',p:80,b:'#e07b39',note:'Sustainably sourced complex carbs from quinoa and tubers.'},{n:'Healthy Fats',v:'14g',p:45,b:'#9c27b0',note:'Primarily monounsaturated fats from the tahini dressing.'}]},
-  {em:'🍗🌽',title:'Chicken & Corn Rice Bowl',tags:[{c:'p',l:'High Protein'}],desc:'Juicy grilled chicken breast over white rice with sweet corn, cherry tomatoes and a zingy lemon dressing.',prep:'10 min',cook:'20 min',kcal:'490 kcal',srv:'1 Portion',ing:['150g Chicken breast, grilled','1 cup Cooked rice','½ cup Corn kernels','Cherry tomatoes, halved','Cucumber, sliced','Juice of ½ lemon','1 tbsp Olive oil, salt & pepper'],steps:[{t:'Cook the Rice',d:'Rinse rice and cook with a 2:1 water ratio. Fluff with a fork and spread to cool slightly.'},{t:'Grill the Chicken',d:'Season chicken with salt, pepper and olive oil. Grill or pan-fry 6–7 minutes per side until cooked through. Slice.'},{t:'Assemble',d:'Layer rice in a bowl. Arrange chicken, corn, tomatoes and cucumber in sections.'},{t:'Dress & Serve',d:'Drizzle with lemon juice and olive oil. Season to taste. Eat warm or cold.'}],nut:[{n:'Protein',v:'38g',p:75,b:'#2d6a35',note:'Excellent post-workout protein source.'},{n:'Carbohydrates',v:'52g',p:65,b:'#e07b39',note:'Complex carbs from rice for sustained energy.'},{n:'Healthy Fats',v:'10g',p:30,b:'#9c27b0',note:'Light dressing keeps this bowl lean.'}]},
-  {em:'🥚🥔',title:'Egg & Potato Salad Bowl',tags:[{c:'f',l:'Vegetarian'}],desc:'Creamy boiled eggs and golden roasted potatoes with crisp cucumber, mustard dressing and fresh herbs.',prep:'10 min',cook:'25 min',kcal:'440 kcal',srv:'1 Portion',ing:['2 Eggs, hard-boiled','250g Potatoes, roasted','Cucumber, sliced','Red onion, thinly sliced','1 tsp Dijon mustard','1 tbsp Olive oil','Juice of ½ lemon, fresh parsley'],steps:[{t:'Roast the Potatoes',d:'Cube potatoes, toss with olive oil, salt and paprika. Roast at 200°C for 25 minutes until golden.'},{t:'Boil the Eggs',d:'Boil eggs for 8 minutes. Cool in cold water, peel and halve.'},{t:'Make the Dressing',d:'Whisk mustard, olive oil, lemon juice, salt and a pinch of pepper.'},{t:'Assemble',d:'Arrange potatoes, eggs, cucumber and red onion. Drizzle dressing and garnish with parsley.'}],nut:[{n:'Protein',v:'24g',p:50,b:'#2d6a35',note:'Eggs provide complete protein with all essential amino acids.'},{n:'Carbohydrates',v:'50g',p:62,b:'#e07b39',note:'Potatoes are a great source of resistant starch.'},{n:'Healthy Fats',v:'16g',p:50,b:'#9c27b0',note:'Olive oil contributes heart-healthy monounsaturated fats.'}]},
-  {em:'🥗🍗',title:'Mediterranean Chicken Rice',tags:[{c:'p',l:'High Protein'},{c:'f',l:'Bold Flavour'}],desc:'Herb-marinated chicken with fluffy rice, kalamata olives, cucumber, tomatoes and crumbled feta.',prep:'10 min',cook:'20 min',kcal:'510 kcal',srv:'1 Portion',ing:['150g Chicken breast, herb-marinated','1 cup Cooked rice','Cucumber, diced','Cherry tomatoes, halved','8 Kalamata olives','30g Feta cheese, crumbled','Olive oil & dried oregano'],steps:[{t:'Marinate the Chicken',d:'Mix olive oil, lemon, garlic and oregano. Coat chicken and let sit 10 minutes.'},{t:'Cook the Chicken',d:'Pan-fry 6–7 minutes per side until golden. Rest then slice.'},{t:'Prepare Rice',d:'Serve freshly cooked or meal-prepped rice as the base.'},{t:'Assemble',d:'Layer rice, top with chicken, cucumber, tomatoes, olives and feta.'}],nut:[{n:'Protein',v:'42g',p:85,b:'#2d6a35',note:'One of the highest-protein bowls in the collection.'},{n:'Carbohydrates',v:'48g',p:60,b:'#e07b39',note:'Balanced carbs from rice for steady energy.'},{n:'Healthy Fats',v:'14g',p:43,b:'#9c27b0',note:'Olives and feta add flavour and healthy fats.'}]},
-  {em:'🌿🥔',title:'Herb Chicken Potato Bowl',tags:[{c:'p',l:'High Protein'}],desc:'Lemon and herb marinated chicken with crispy roasted potatoes, mixed greens and a light yogurt dressing.',prep:'10 min',cook:'30 min',kcal:'490 kcal',srv:'1 Portion',ing:['150g Chicken breast','250g Potatoes, roasted','Mixed greens (handful)','Juice of 1 lemon','1 tbsp Olive oil','Fresh rosemary & thyme','2 tbsp Greek yogurt, salt & pepper'],steps:[{t:'Roast the Potatoes',d:'Toss potato cubes with olive oil, rosemary, thyme and salt. Roast at 200°C for 25–30 minutes.'},{t:'Cook the Chicken',d:'Season with lemon zest, herbs, salt and pepper. Pan-fry until golden, about 12 minutes total.'},{t:'Make Yogurt Dressing',d:'Mix Greek yogurt with lemon juice, crushed garlic, salt and a drizzle of olive oil.'},{t:'Assemble',d:'Plate greens, top with roasted potatoes and sliced chicken. Spoon yogurt dressing over.'}],nut:[{n:'Protein',v:'40g',p:80,b:'#2d6a35',note:'Chicken + yogurt dressing double the protein content.'},{n:'Carbohydrates',v:'46g',p:57,b:'#e07b39',note:'Roasted potatoes provide slow-release energy.'},{n:'Healthy Fats',v:'13g',p:40,b:'#9c27b0',note:'Light dressing keeps calories in check.'}]},
-  {em:'🫘🥔',title:'Chickpea & Sweet Potato Bowl',tags:[{c:'v',l:'Vegan'},{c:'f',l:'Fibre-Rich'}],desc:'Spiced roasted chickpeas and sweet potato cubes over spinach with a bright cumin-lemon dressing.',prep:'10 min',cook:'30 min',kcal:'470 kcal',srv:'1 Portion',ing:['1 can Chickpeas, drained & rinsed','1 medium Sweet potato, cubed','Baby spinach (large handful)','1 tsp Cumin powder','1 tsp Paprika','Juice of 1 lemon','1 tbsp Olive oil, salt & pepper'],steps:[{t:'Roast Chickpeas & Sweet Potato',d:'Toss with olive oil, cumin, paprika and salt. Roast at 200°C for 25–30 minutes, shaking halfway.'},{t:'Make the Dressing',d:'Whisk lemon juice with olive oil, a pinch of cumin, salt and pepper.'},{t:'Wilt the Spinach (optional)',d:'Briefly wilt spinach in a warm pan for 1 minute, or leave raw for more crunch.'},{t:'Assemble',d:'Plate spinach as the base. Top with roasted chickpeas and sweet potato. Drizzle lemon dressing generously.'}],nut:[{n:'Protein',v:'16g',p:32,b:'#2d6a35',note:'Plant-based protein from chickpeas.'},{n:'Carbohydrates',v:'72g',p:90,b:'#e07b39',note:'Sweet potato and chickpeas are rich in complex carbs and fibre.'},{n:'Healthy Fats',v:'11g',p:34,b:'#9c27b0',note:'Olive oil helps absorb fat-soluble vitamins.'}]}
+  {em:'🥗',title:'Rainbow Veggie Bowl',tags:['Vegan','High Fiber'],bg:'linear-gradient(135deg,#c8e6c9,#66bb6a)',kcal:'420 kcal',srv:'2 Portions',prep:'15 min',cook:'20 min',ing:['1 cup quinoa, cooked','1 cup purple cabbage, shredded','2 carrots, julienned','1 red bell pepper, sliced','½ cup edamame, steamed','1 sweet potato, cubed & roasted','2 tbsp tahini dressing'],steps:[{t:'Prepare the Grain Base',d:'Rinse quinoa under cold water. Combine 1 cup quinoa with 2 cups water. Bring to a boil, cover and simmer 15 minutes until fluffy.'},{t:'Roast the Sweet Potatoes',d:'Toss sweet potato cubes with olive oil, salt and pepper. Roast at 200°C for 20 minutes until tender and slightly caramelised.'},{t:'Chop and Steam',d:'Julienne the carrots and shred the cabbage. Steam edamame 3–5 minutes until bright green and tender.'},{t:'Assemble and Dress',d:'Divide quinoa into two bowls. Arrange vegetables in colourful sections. Drizzle generously with tahini dressing before serving.'}],nut:[{n:'Protein',v:'18g',p:60,b:'#2d6a35',note:'75% of your recommended post-workout target.'},{n:'Carbohydrates',v:'54g',p:80,b:'#e07b39',note:'Complex carbs from quinoa and sweet potato.'},{n:'Healthy Fats',v:'14g',p:45,b:'#9c27b0',note:'Primarily monounsaturated fats from tahini.'}]},
+  {em:'🍗🌽',title:'Chicken & Corn Rice Bowl',tags:['High Protein'],bg:'linear-gradient(135deg,#c8e6c9,#43a047)',kcal:'490 kcal',srv:'1 Portion',prep:'10 min',cook:'20 min',ing:['150g chicken breast, grilled','1 cup cooked rice','½ cup corn kernels','Cherry tomatoes, halved','Cucumber, sliced','Juice of ½ lemon','1 tbsp olive oil, salt & pepper'],steps:[{t:'Cook the Rice',d:'Rinse rice and cook with a 2:1 water ratio. Fluff with a fork and spread to cool slightly.'},{t:'Grill the Chicken',d:'Season chicken with salt, pepper and olive oil. Grill or pan-fry 6–7 minutes per side until cooked through. Slice.'},{t:'Assemble',d:'Layer rice in a bowl. Arrange chicken, corn, tomatoes and cucumber in sections.'},{t:'Dress & Serve',d:'Drizzle with lemon juice and olive oil. Season to taste. Eat warm or cold.'}],nut:[{n:'Protein',v:'38g',p:75,b:'#2d6a35',note:'Excellent post-workout protein source.'},{n:'Carbohydrates',v:'52g',p:65,b:'#e07b39',note:'Complex carbs from rice for sustained energy.'},{n:'Healthy Fats',v:'10g',p:30,b:'#9c27b0',note:'Light dressing keeps this bowl lean.'}]},
+  {em:'🥚🥔',title:'Egg & Potato Salad Bowl',tags:['Vegetarian'],bg:'linear-gradient(135deg,#fff9c4,#f9a825)',kcal:'440 kcal',srv:'1 Portion',prep:'10 min',cook:'25 min',ing:['2 eggs, hard-boiled','250g potatoes, roasted','Cucumber, sliced','Red onion, thinly sliced','1 tsp Dijon mustard','1 tbsp olive oil','Juice of ½ lemon, fresh parsley'],steps:[{t:'Roast the Potatoes',d:'Cube potatoes, toss with olive oil, salt and paprika. Roast at 200°C for 25 minutes until golden.'},{t:'Boil the Eggs',d:'Boil eggs for 8 minutes. Cool in cold water, peel and halve.'},{t:'Make the Dressing',d:'Whisk mustard, olive oil, lemon juice, salt and a pinch of pepper.'},{t:'Assemble',d:'Arrange potatoes, eggs, cucumber and red onion. Drizzle dressing and garnish with parsley.'}],nut:[{n:'Protein',v:'24g',p:50,b:'#2d6a35',note:'Complete protein with all essential amino acids.'},{n:'Carbohydrates',v:'50g',p:62,b:'#e07b39',note:'Potatoes are a great source of resistant starch.'},{n:'Healthy Fats',v:'16g',p:50,b:'#9c27b0',note:'Olive oil contributes heart-healthy monounsaturated fats.'}]},
+  {em:'🥗🍗',title:'Mediterranean Chicken Rice',tags:['High Protein','Bold Flavour'],bg:'linear-gradient(135deg,#e8f5e9,#2e7d32)',kcal:'510 kcal',srv:'1 Portion',prep:'10 min',cook:'20 min',ing:['150g chicken breast, herb-marinated','1 cup cooked rice','Cucumber, diced','Cherry tomatoes, halved','8 kalamata olives','30g feta cheese, crumbled','Olive oil & dried oregano'],steps:[{t:'Marinate the Chicken',d:'Mix olive oil, lemon, garlic and oregano. Coat chicken and let sit 10 minutes.'},{t:'Cook the Chicken',d:'Pan-fry 6–7 minutes per side until golden. Rest then slice.'},{t:'Prepare Rice',d:'Serve freshly cooked or meal-prepped rice as the base.'},{t:'Assemble',d:'Layer rice, top with chicken, cucumber, tomatoes, olives and feta.'}],nut:[{n:'Protein',v:'42g',p:85,b:'#2d6a35',note:'One of the highest-protein recipes in the collection.'},{n:'Carbohydrates',v:'48g',p:60,b:'#e07b39',note:'Balanced carbs from rice for steady energy.'},{n:'Healthy Fats',v:'14g',p:43,b:'#9c27b0',note:'Olives and feta add flavour and healthy fats.'}]},
+  {em:'🌿🥔',title:'Herb Chicken Potato Bowl',tags:['High Protein'],bg:'linear-gradient(135deg,#dcedc8,#558b2f)',kcal:'490 kcal',srv:'1 Portion',prep:'10 min',cook:'30 min',ing:['150g chicken breast','250g potatoes, roasted','Mixed greens (handful)','Juice of 1 lemon','1 tbsp olive oil','Fresh rosemary & thyme','2 tbsp Greek yogurt, salt & pepper'],steps:[{t:'Roast the Potatoes',d:'Toss potato cubes with olive oil, rosemary, thyme and salt. Roast at 200°C for 25–30 minutes.'},{t:'Cook the Chicken',d:'Season with lemon zest, herbs, salt and pepper. Pan-fry until golden, about 12 minutes total.'},{t:'Make Yogurt Dressing',d:'Mix Greek yogurt with lemon juice, crushed garlic, salt and a drizzle of olive oil.'},{t:'Assemble',d:'Plate greens, top with roasted potatoes and sliced chicken. Spoon yogurt dressing over.'}],nut:[{n:'Protein',v:'40g',p:80,b:'#2d6a35',note:'Chicken + yogurt dressing double the protein content.'},{n:'Carbohydrates',v:'46g',p:57,b:'#e07b39',note:'Roasted potatoes provide slow-release energy.'},{n:'Healthy Fats',v:'13g',p:40,b:'#9c27b0',note:'Light dressing keeps calories in check.'}]},
+  {em:'🫘🥔',title:'Chickpea & Sweet Potato Bowl',tags:['Vegan','Fibre-Rich'],bg:'linear-gradient(135deg,#f3e5f5,#ab47bc)',kcal:'470 kcal',srv:'1 Portion',prep:'10 min',cook:'30 min',ing:['1 can chickpeas, drained & rinsed','1 medium sweet potato, cubed','Baby spinach (large handful)','1 tsp cumin powder','1 tsp paprika','Juice of 1 lemon','1 tbsp olive oil, salt & pepper'],steps:[{t:'Roast Chickpeas & Sweet Potato',d:'Toss with olive oil, cumin, paprika and salt. Roast at 200°C for 25–30 minutes, shaking halfway.'},{t:'Make the Dressing',d:'Whisk lemon juice with olive oil, a pinch of cumin, salt and pepper.'},{t:'Wilt the Spinach (optional)',d:'Briefly wilt spinach in a warm pan for 1 minute, or leave raw for more crunch.'},{t:'Assemble',d:'Plate spinach as the base. Top with roasted chickpeas and sweet potato. Drizzle lemon dressing generously.'}],nut:[{n:'Protein',v:'16g',p:32,b:'#2d6a35',note:'Plant-based protein from chickpeas.'},{n:'Carbohydrates',v:'72g',p:90,b:'#e07b39',note:'Sweet potato and chickpeas are rich in complex carbs and fibre.'},{n:'Healthy Fats',v:'11g',p:34,b:'#9c27b0',note:'Olive oil helps absorb fat-soluble vitamins.'}]}
 ];
 
-function lr(i,btn){
-  if(btn){document.querySelectorAll('.rt').forEach(t=>t.classList.remove('active'));btn.classList.add('active')}
-  const r=RD[i];
-  document.getElementById('rhem').textContent=r.em;
-  document.getElementById('rhtitle').textContent=r.title;
-  document.getElementById('rhdesc').textContent=r.desc;
-  const tc={v:'v',f:'f',p:'p'};
-  document.getElementById('rhtags').innerHTML=r.tags.map(t=>'<span class="htag '+tc[t.c]+'">'+t.l+'</span>').join('');
-  document.getElementById('rp').textContent=r.prep;
-  document.getElementById('rc').textContent=r.cook;
-  document.getElementById('rk').textContent=r.kcal;
-  document.getElementById('rs').textContent=r.srv;
-  document.getElementById('rings').innerHTML=r.ing.map(x=>'<div class="ii" onclick="ti(this)"><div class="ick"></div><span>'+x+'</span></div>').join('');
-  document.getElementById('rsteps').innerHTML=r.steps.map((s,i)=>'<div class="step"><div class="snum">'+(i+1)+'</div><div><div class="stitle">'+s.t+'</div><div class="stext">'+s.d+'</div></div></div>').join('');
-  document.getElementById('rnut').innerHTML=r.nut.map(n=>'<div><div class="nr-h"><span class="nr-name">'+n.n+'</span><span class="nr-val">'+n.v+'</span></div><div class="nbar"><div class="nbar-f" style="background:'+n.b+';width:'+n.p+'%"></div></div><div class="nnote">'+n.note+'</div></div>').join('');
+function showRecipe(idx,el){
+  if(el){document.querySelectorAll('#page-recipes .bs-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
+  const r=RD[idx];
+  const panel=document.getElementById('recipe-detail');
+  const tagsHtml=r.tags.map(t=>'<span class="tag">'+t+'</span>').join('');
+  const ingHtml=r.ing.map(x=>'<div class="bd-ii" onclick="tri(this)"><div class="bd-ick"></div><span>'+x+'</span></div>').join('');
+  const stepsHtml=r.steps.map((s,i)=>'<div class="bd-step"><div class="bd-snum">'+(i+1)+'</div><div><div class="bd-stitle">'+s.t+'</div><div class="bd-stext">'+s.d+'</div></div></div>').join('');
+  const nutHtml=r.nut.map(n=>'<div><div class="bd-nr-h"><span class="bd-nr-name">'+n.n+'</span><span class="bd-nr-val">'+n.v+'</span></div><div class="bd-nbar"><div class="bd-nbar-f" style="background:'+n.b+';width:'+n.p+'%"></div></div><div class="bd-nnote">'+n.note+'</div></div>').join('');
+  panel.innerHTML='<div class="bd-hero" style="background:'+r.bg+'"><span style="font-size:5rem">'+r.em+'</span><div class="bd-hero-tags">'+tagsHtml+'</div></div>'
+    +'<div class="bd-title">'+r.title+'</div>'
+    +'<div class="bd-desc">'+r.desc+'</div>'
+    +'<div class="bd-stats"><div class="bd-stat"><div class="bd-stat-i">⏱</div><div class="bd-stat-l">Prep</div><div class="bd-stat-v">'+r.prep+'</div></div>'
+    +'<div class="bd-stat"><div class="bd-stat-i">🍽</div><div class="bd-stat-l">Cook</div><div class="bd-stat-v">'+r.cook+'</div></div>'
+    +'<div class="bd-stat"><div class="bd-stat-i">⚡</div><div class="bd-stat-l">Calories</div><div class="bd-stat-v">'+r.kcal+'</div></div>'
+    +'<div class="bd-stat"><div class="bd-stat-i">👥</div><div class="bd-stat-l">Servings</div><div class="bd-stat-v">'+r.srv+'</div></div></div>'
+    +'<div class="bd-grid"><div class="bd-card"><h3>🛒 Ingredients</h3><div class="bd-ing-list">'+ingHtml+'</div></div>'
+    +'<div class="bd-card"><h3>📋 Instructions</h3><div class="bd-steps">'+stepsHtml+'</div></div></div>'
+    +'<div class="bd-nut"><h3>📊 Nutritional Breakdown</h3><div class="bd-nut-rows">'+nutHtml+'</div></div>';
 }
+function tri(el){el.classList.toggle('ck');el.querySelector('.bd-ick').textContent=el.classList.contains('ck')?'✓':'';}
 
 function ti(el){el.classList.toggle('ck');el.querySelector('.ick').textContent=el.classList.contains('ck')?'✓':'';}
 function ts(el){el.classList.toggle('ck');el.querySelector('.sck').textContent=el.classList.contains('ck')?'✓':'';}
@@ -620,7 +627,7 @@ function go(name,btn){
   else{const m={dashboard:0,bowls:1,plan:2,shopping:3,prep:4,recipes:5};const ls=document.querySelectorAll('.nl');if(m[name]!==undefined)ls[m[name]].classList.add('active');}
   window.scrollTo({top:0,behavior:'smooth'});
 }
-lr(0,null);
+showRecipe(0,null);
 
 const BD=[
   {em:'🍗🌽',title:'Chicken & Corn Rice Bowl',tags:['High Protein'],bg:'linear-gradient(135deg,#c8e6c9,#66bb6a)',kcal:490,protein:'38g',prep:'10 min',cook:'20 min',desc:'Juicy grilled chicken breast over white rice with sweet corn, cherry tomatoes and a zingy lemon dressing.',ing:['150g chicken breast, grilled','1 cup cooked white rice','½ cup corn kernels','Cherry tomatoes, halved','Cucumber, sliced','Juice of ½ lemon','1 tbsp olive oil, salt & pepper'],steps:[{t:'Cook the Rice',d:'Rinse rice and cook 2:1 water ratio. Fluff with a fork and spread to cool.'},{t:'Grill the Chicken',d:'Season with salt, pepper, olive oil. Grill or pan-fry 6–7 min per side until cooked through. Slice.'},{t:'Assemble',d:'Layer rice in a container. Arrange chicken, corn, tomatoes and cucumber.'},{t:'Dress & Pack',d:'Drizzle lemon juice and olive oil just before eating. Tastes great cold.'}],nut:[{n:'Protein',v:'38g',p:76,b:'#2d6a35'},{n:'Carbs',v:'52g',p:65,b:'#e07b39'},{n:'Fats',v:'10g',p:30,b:'#9c27b0'}]},
